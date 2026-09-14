@@ -1,0 +1,18 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+
+    container_name: technook-frontend-dev
+
+    ports:
+      - '4200:4200'
+
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+    command: npm start -- --host 0.0.0.0
+
+    restart: unless-stopped
