@@ -1,0 +1,8 @@
+<label [for]="name()">
+  {{ label() }}
+</label>
+<input [id]="name()" [name]="name()" [type]="type()" [placeholder]="placeholder()" />
+
+@if (erro()) {
+  <small class="mensagem-erro"> {{ erro() }}</small>
+}

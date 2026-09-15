@@ -1,1 +1,65 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  /* Cores principais */
+  --cor-primaria: #0055ff;
+  --cor-secundaria: #e7ebee;
+  --cor-primaria-clara: #b5ceff;
+
+  /* Botões */
+  --cor-botao-primario: #0055ff;
+  --cor-botao-secundario: #e7ebee;
+  --cor-botao-edicao: #6b6b6b;
+  --cor-botao-delecao: #ec1312;
+
+  /* Neutros */
+  --cor-branco: #ffffff;
+  --cor-preto: #000000;
+  --cor-cinza: #6b6b6b;
+  --cor-cinza-claro: #a0a0a0;
+  --cor-cinza-apagado: #d1d2d9;
+
+  /* Texto */
+  --cor-texto-primario: #000000;
+  --cor-texto-secundario: #6b6b6b;
+  --cor-texto-apagado: #808080;
+  --cor-texto-inverse: #ffffff;
+  --cor-erro: #ec1312;
+  --fonte-principal: Arial, Helvetica, sans-serif;
+
+  /* Estados */
+  --cor-sucesso: #2d9e20;
+  --cor-perigo: #ec1312;
+
+  /* Cores auxiliares da aplicação */
+  --cor-roxo: #820ad1;
+  --cor-azul-marinho: #001864;
+  --cor-cyano: #9af4eb;
+
+  /* Gráficos */
+  --cor-grafico-azul: #5b92fc;
+  --cor-grafico-azul-claro: #b5ceff;
+  --cor-grafico-verde: #409338;
+  --cor-grafico-vermelho: #cb2e34;
+}
+
+body {
+  font-family: var(--fonte-principal);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  min-height: 100%;
+  font-family: var(--fonte-principal);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}

@@ -1,0 +1,31 @@
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primario {
+  background-color: var(--cor-botao-primario);
+  color: var(--cor-branco);
+}
+
+.secundario {
+  background-color: var(--cor-botao-secundario);
+  color: var(--cor-preto);
+}
+
+.perigo {
+  background-color: var(--cor-botao-delecao);
+  color: white;
+}
+
+.largura-total {
+  width: 100%;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
