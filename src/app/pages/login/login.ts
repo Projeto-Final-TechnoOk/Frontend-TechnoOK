@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrl: './login.css',
   templateUrl: './login.html',
 })
-export class Login {
+export class LoginPage {
   private readonly router = inject(Router);
 
   entrar(): void {

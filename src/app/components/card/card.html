@@ -1,0 +1,21 @@
+<div class="card">
+  <div class="topo">
+    <div class="textos">
+      <h2 class="titulo">{{ titulo() }}</h2>
+
+      @if (subtitulo()) {
+        <p class="subtitulo">{{ subtitulo() }}</p>
+      }
+    </div>
+
+    @if (redirecionamento()) {
+      <div class="redirecionamento">
+        <span class="seta"></span>
+      </div>
+    }
+  </div>
+
+  <div class="conteudo">
+    <ng-content></ng-content>
+  </div>
+</div>

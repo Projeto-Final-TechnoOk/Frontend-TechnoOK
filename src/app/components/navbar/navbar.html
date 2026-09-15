@@ -1,10 +1,24 @@
 <div class="navbar">
   <img class="logo" src="/logoFink.png" alt="Logo Fink" />
   <nav class="opcoes-navegacao">
-    <a class="opcao">Dashboard</a>
-    <a class="opcao">Imóveis</a>
-    <a class="opcao">Medidores</a>
-    <a class="opcao">Leituras</a>
+    <a class="item-navegacao" routerLink="/dashboard" routerLinkActive="ativo">
+      <span class="opcao">Dashboard</span>
+      <div class="linha"></div>
+    </a>
+    <a class="item-navegacao" routerLink="/imoveis" routerLinkActive="ativo">
+      <span class="opcao">Imóveis</span>
+      <div class="linha"></div>
+    </a>
+    <a class="item-navegacao" routerLink="/medidores" routerLinkActive="ativo">
+      <span class="opcao">Medidores</span>
+      <div class="linha"></div>
+    </a>
+    <a class="item-navegacao" routerLink="/leituras" routerLinkActive="ativo">
+      <span class="opcao">Leituras</span>
+      <div class="linha"></div>
+    </a>
   </nav>
-  <div class="perfil"></div>
+  <div class="perfil">
+    <img class="icone-usuario" src="/user-icon.png" alt="Ícone de Usuário" />
+  </div>
 </div>

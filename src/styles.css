@@ -1,8 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@400;500;600;700&display=swap');
+
 :root {
   /* Cores principais */
   --cor-primaria: #0055ff;
   --cor-secundaria: #e7ebee;
   --cor-primaria-clara: #b5ceff;
+  --cor-background: #f5f8f8;
 
   /* Botões */
   --cor-botao-primario: #0055ff;
@@ -19,11 +22,11 @@
 
   /* Texto */
   --cor-texto-primario: #000000;
-  --cor-texto-secundario: #6b6b6b;
+  --cor-texto-secundario: #808088;
   --cor-texto-apagado: #808080;
   --cor-texto-inverse: #ffffff;
   --cor-erro: #ec1312;
-  --fonte-principal: Arial, Helvetica, sans-serif;
+  --fonte-principal: 'Bitter', serif;
 
   /* Estados */
   --cor-sucesso: #2d9e20;
@@ -62,4 +65,9 @@ input,
 select,
 textarea {
   font: inherit;
+}
+
+.logo {
+  max-height: 5%;
+  max-width: 5%;
 }
