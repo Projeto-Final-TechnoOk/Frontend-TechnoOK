@@ -1,1 +1,54 @@
-<p>dashboard works!</p>
+<div class="corpo">
+  <div class="topo">
+    <h1 class="texto-boas-vindas">Dashboard</h1>
+    <p class="subtitulo-boas-vindas">Acompanhe os principais dados de telemetria do sistema.</p>
+  </div>
+  <div class="contadores">
+    <app-card
+      class="card-contador"
+      titulo="Imóveis"
+      subtitulo="Quantidade:"
+      redirecionamento="/imoveis"
+    >
+      <p class="valor-contador">{{ resumo()?.quantidadeImoveis }}</p>
+    </app-card>
+    <app-card
+      class="card-contador"
+      titulo="Medidores"
+      subtitulo="Verifique todos os medidores."
+      redirecionamento="/medidores"
+    >
+      <p class="valor-contador">{{ resumo()?.quantidadeMedidores }}</p>
+    </app-card>
+
+    <app-card
+      class="card-contador"
+      titulo="Leituras"
+      subtitulo="Verifique todas as leituras."
+      redirecionamento="/leituras"
+    >
+      <p class="valor-contador">{{ resumo()?.leiturasNoMes }}</p>
+    </app-card>
+    <app-card class="card-medias" titulo="Consumo médio mensal por tipo de medidor">
+      <div class="medias-consumo">
+        <div class="media-item">
+          <span class="tipo">Energia</span>
+          <span class="valor energia">235 kWh</span>
+        </div>
+
+        <div class="media-item">
+          <span class="tipo">Água</span>
+          <span class="valor agua">18 m³</span>
+        </div>
+
+        <div class="media-item">
+          <span class="tipo">Gás</span>
+          <span class="valor gas">7 m³</span>
+        </div>
+      </div></app-card
+    >
+  </div>
+  <div class="graficos">
+    <app-card class="grafico-principal" titulo="Gráfico de consumo por tempo"></app-card>
+  </div>
+</div>

@@ -9,8 +9,11 @@
     </div>
 
     @if (redirecionamento()) {
-      <div class="redirecionamento">
-        <span class="seta"></span>
+      <div class="redirecionamento" [routerLink]="redirecionamento()">
+        <span class="seta-completa">
+          <span class="haste"></span>
+          <span class="ponta"></span>
+        </span>
       </div>
     }
   </div>

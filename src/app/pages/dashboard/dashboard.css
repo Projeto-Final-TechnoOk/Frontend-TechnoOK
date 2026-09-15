@@ -1,0 +1,81 @@
+.corpo {
+  padding: 2%;
+}
+
+.topo {
+  margin-bottom: 24px;
+}
+
+.texto-boas-vindas {
+  font-size: 1.6rem;
+  color: var(--cor-texto-primario);
+}
+
+.subtitulo-boas-vindas {
+  margin-top: 4px;
+  font-size: 0.9rem;
+  color: var(--cor-texto-secundario);
+}
+
+.contadores {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.8fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.card-contador,
+.card-medias {
+  height: 100%;
+}
+
+.valor-contador {
+  margin-top: 12px;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--cor-texto-primario);
+}
+
+.medias-consumo {
+  display: flex;
+  gap: 60px;
+  margin-top: 16px;
+}
+
+.media-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tipo {
+  font-size: 0.8rem;
+  color: var(--cor-texto-secundario);
+}
+
+.valor {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.energia {
+  color: #e7a900;
+}
+
+.agua {
+  color: #004ebc;
+}
+
+.gas {
+  color: #7ca923;
+}
+
+.graficos {
+  margin-top: 20px;
+}
+
+.grafico-principal {
+  display: block;
+  width: 100%;
+  min-height: 380px;
+}

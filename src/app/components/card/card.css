@@ -1,0 +1,76 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.card {
+  background-color: var(--cor-branco);
+  height: 100%;
+
+  border-radius: 8px;
+  border: none;
+
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+}
+
+.topo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.textos {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.titulo {
+  font-size: 1.1rem;
+  color: var(--cor-texto-primario);
+}
+
+.subtitulo {
+  font-size: 0.85rem;
+  color: var(--cor-texto-secundario);
+}
+
+.redirecionamento {
+  color: var(--cor-texto-primario);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.redirecionamento:hover {
+  color: var(--cor-primaria);
+}
+
+.seta-completa {
+  display: inline-flex;
+  align-items: center;
+}
+
+.haste {
+  width: 14px;
+  height: 2px;
+  background-color: currentColor;
+}
+
+.ponta {
+  width: 8px;
+  height: 8px;
+
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+
+  transform: rotate(45deg);
+
+  margin-left: -4px;
+}
+
+.conteudo {
+  margin-top: 16px;
+}

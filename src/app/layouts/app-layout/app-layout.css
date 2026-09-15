@@ -1,0 +1,4 @@
+.pagina {
+  background-color: var(--cor-background);
+  min-height: 100vh;
+}
