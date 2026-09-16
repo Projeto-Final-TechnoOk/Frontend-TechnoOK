@@ -37,15 +37,16 @@
   --cor-azul-marinho: #001864;
   --cor-cyano: #9af4eb;
 
+  /* Tipos Medidores */
+  --cor-amarelo-energia: #e7a900;
+  --cor-azul-agua: #004ebc;
+  --cor-verde-gas: #7ca923;
+
   /* Gráficos */
   --cor-grafico-azul: #5b92fc;
   --cor-grafico-azul-claro: #b5ceff;
   --cor-grafico-verde: #409338;
   --cor-grafico-vermelho: #cb2e34;
-}
-
-body {
-  font-family: var(--fonte-principal);
 }
 
 * {

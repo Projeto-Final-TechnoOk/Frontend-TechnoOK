@@ -23,7 +23,7 @@
 
     <app-card
       class="card-contador"
-      titulo="Leituras"
+      titulo="Leituras (Mensal)"
       subtitulo="Verifique todas as leituras."
       redirecionamento="/leituras"
     >
@@ -49,6 +49,33 @@
     >
   </div>
   <div class="graficos">
-    <app-card class="grafico-principal" titulo="Gráfico de consumo por tempo"></app-card>
+    <app-card class="grafico-principal">
+      <div class="cabecalho-grafico">
+        <div class="titulo-grafico">
+          <h2>Consumo ao longo do tempo</h2>
+          <p>Selecione um medidor para visualizar seu consumo por ano, mês e dia.</p>
+        </div>
+
+        <app-select
+          placeholder="Selecione um medidor"
+          [opcoes]="opcoesMedidores()"
+          [valor]="medidorSelecionado()"
+          (valorAlterado)="selecionarMedidor($event)"
+        />
+      </div>
+      @if (nivelGrafico() !== 'ano') {
+        <div class="voltar-grafico">
+          <app-seta tipo="esquerda" (clicada)="voltarNivel()" />
+        </div>
+      }
+      <app-grafico-barras
+        titulo="Consumo por ano"
+        [categorias]="categoriasGrafico()"
+        [valores]="valoresGrafico()"
+        nomeSerie="Consumo"
+        unidade="kWh"
+        (barraClicada)="aoClicarBarra($event)"
+      ></app-grafico-barras>
+    </app-card>
   </div>
 </div>

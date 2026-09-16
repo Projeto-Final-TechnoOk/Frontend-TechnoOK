@@ -1,0 +1,24 @@
+.seta-completa {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.seta-completa.esquerda {
+  transform: rotate(180deg);
+}
+
+.haste {
+  width: 14px;
+  height: 2px;
+  background-color: currentColor;
+}
+
+.ponta {
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: rotate(45deg);
+  margin-left: -4px;
+}

@@ -10,10 +10,7 @@
 
     @if (redirecionamento()) {
       <div class="redirecionamento" [routerLink]="redirecionamento()">
-        <span class="seta-completa">
-          <span class="haste"></span>
-          <span class="ponta"></span>
-        </span>
+        <app-seta tipo="direita" />
       </div>
     }
   </div>

@@ -17,6 +17,7 @@
   color: var(--cor-texto-secundario);
 }
 
+/* Contadores */
 .contadores {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1.8fr;
@@ -59,17 +60,18 @@
 }
 
 .energia {
-  color: #e7a900;
+  color: var(--cor-amarelo-energia);
 }
 
 .agua {
-  color: #004ebc;
+  color: var(--cor-azul-agua);
 }
 
 .gas {
-  color: #7ca923;
+  color: var(--cor-verde-gas);
 }
 
+/* Graficos */
 .graficos {
   margin-top: 20px;
 }
@@ -78,4 +80,33 @@
   display: block;
   width: 100%;
   min-height: 380px;
+}
+
+.cabecalho-grafico {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.cabecalho-grafico h2 {
+  font-size: 1.4rem;
+  color: var(--cor-texto-primario);
+}
+
+.titulo-grafico p {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--cor-texto-secundario);
+}
+
+.cabecalho-grafico app-select {
+  width: 340px;
+}
+
+.voltar-grafico {
+  margin-left: 20px;
+  margin-top: 12px;
+  margin-bottom: 12px;
 }

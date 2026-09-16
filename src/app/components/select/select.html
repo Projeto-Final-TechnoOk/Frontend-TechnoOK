@@ -1,0 +1,17 @@
+@if (label()) {
+  <label>
+    {{ label() }}
+  </label>
+}
+
+<select [value]="valor()" [class.placeholder]="!valor()" (change)="aoAlterar($event)">
+  <option value="" disabled>
+    {{ placeholder() }}
+  </option>
+
+  @for (opcao of opcoes(); track opcao.value) {
+    <option [value]="opcao.value">
+      {{ opcao.label }}
+    </option>
+  }
+</select>

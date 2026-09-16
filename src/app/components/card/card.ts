@@ -1,8 +1,9 @@
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { SetaComponent } from '../seta/seta';
 
 @Component({
-  imports: [RouterLink],
+  imports: [RouterLink, SetaComponent],
   selector: 'app-card',
   styleUrl: './card.css',
   templateUrl: './card.html',

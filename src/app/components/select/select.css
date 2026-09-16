@@ -1,0 +1,39 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cor-texto);
+}
+
+select {
+  width: 100%;
+  padding: 12px 14px;
+
+  border: 1px solid var(--cor-cinza-apagado);
+  border-radius: 8px;
+
+  background-color: var(--cor-branco);
+  color: var(--cor-texto-primario);
+
+  font-size: 16px;
+  outline: none;
+
+  cursor: pointer;
+}
+
+select:focus {
+  border-color: var(--cor-primaria);
+}
+
+select.placeholder {
+  color: var(--cor-cinza-apagado);
+}
+
+option {
+  color: var(--cor-texto-primario);
+}
