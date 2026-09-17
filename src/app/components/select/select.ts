@@ -3,6 +3,7 @@ import { Component, input, output } from '@angular/core';
 export interface OpcaoSelect {
   label: string;
   value: string;
+  tipo?: string;
 }
 
 @Component({

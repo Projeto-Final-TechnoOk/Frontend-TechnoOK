@@ -49,6 +49,9 @@ export class DashboardPage implements OnInit {
   anoSelecionado = signal<number | null>(null);
   mesSelecionado = signal<number | null>(null);
 
+  corGrafico = signal<string>('#ffffff');
+  unidadeMedida = signal<string>('');
+
   carregarMedidores(): void {
     this.medidoresService.listar().subscribe({
       next: (medidores) => {
@@ -68,6 +71,26 @@ export class DashboardPage implements OnInit {
 
   selecionarMedidor(id: string): void {
     this.medidorSelecionado.set(id);
+
+    const medidor = this.opcoesMedidores().find((opcao) => opcao.value === id);
+
+    if (medidor) {
+      if (medidor.tipo === 'ENERGIA') {
+        this.corGrafico.set('#e7a900');
+        this.unidadeMedida.set('kWh');
+      }
+
+      if (medidor.tipo === 'AGUA') {
+        this.corGrafico.set('#004ebc');
+        this.unidadeMedida.set('m³');
+      }
+
+      if (medidor.tipo === 'GAS') {
+        this.corGrafico.set('#7ca923');
+        this.unidadeMedida.set('m³');
+      }
+    }
+
     this.anoSelecionado.set(null);
     this.mesSelecionado.set(null);
 

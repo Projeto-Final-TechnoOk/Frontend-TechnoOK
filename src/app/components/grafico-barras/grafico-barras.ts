@@ -6,6 +6,8 @@ import {
   NgApexchartsModule,
   ApexPlotOptions,
   ApexFill,
+  ApexDataLabels,
+  ApexYAxis,
 } from 'ng-apexcharts';
 
 @Component({
@@ -56,8 +58,20 @@ export class GraficoBarrasComponent {
 
   plotOptions: ApexPlotOptions = {
     bar: {
-      columnWidth: '30%',
+      columnWidth: '40%',
       borderRadius: 6,
+      dataLabels: {
+        position: 'top',
+      },
+    },
+  };
+
+  dataLabels: ApexDataLabels = {
+    enabled: true,
+    offsetY: -20,
+    style: {
+      fontSize: '12px',
+      colors: ['#000'],
     },
   };
 
@@ -67,5 +81,11 @@ export class GraficoBarrasComponent {
 
   xaxis = computed<ApexXAxis>(() => ({
     categories: this.categorias(),
+  }));
+
+  yaxis = computed<ApexYAxis>(() => ({
+    title: {
+      text: this.unidade(),
+    },
   }));
 }

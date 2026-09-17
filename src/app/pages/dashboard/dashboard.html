@@ -33,17 +33,17 @@
       <div class="medias-consumo">
         <div class="media-item">
           <span class="tipo">Energia</span>
-          <span class="valor energia">235 kWh</span>
+          <span class="valor energia">{{ resumo()?.mediaEnergia }} kWh</span>
         </div>
 
         <div class="media-item">
           <span class="tipo">Água</span>
-          <span class="valor agua">18 m³</span>
+          <span class="valor agua">{{ resumo()?.mediaAgua }} m³</span>
         </div>
 
         <div class="media-item">
           <span class="tipo">Gás</span>
-          <span class="valor gas">7 m³</span>
+          <span class="valor gas">{{ resumo()?.mediaGas }} m³</span>
         </div>
       </div></app-card
     >
@@ -69,11 +69,11 @@
         </div>
       }
       <app-grafico-barras
-        titulo="Consumo por ano"
         [categorias]="categoriasGrafico()"
         [valores]="valoresGrafico()"
+        [cor]="corGrafico()"
         nomeSerie="Consumo"
-        unidade="kWh"
+        [unidade]="unidadeMedida()"
         (barraClicada)="aoClicarBarra($event)"
       ></app-grafico-barras>
     </app-card>
