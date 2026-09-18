@@ -1,4 +1,16 @@
+.layout {
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+}
+
 .pagina {
+  flex: 1;
+
   background-color: var(--cor-background);
-  min-height: 100vh;
+
+  padding: 1% 2%;
+
+  overflow-y: auto;
 }

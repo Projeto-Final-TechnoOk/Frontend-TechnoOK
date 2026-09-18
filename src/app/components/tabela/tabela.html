@@ -1,0 +1,45 @@
+<div class="tabela-container">
+  <table>
+    <thead>
+      <tr>
+        @for (cabecalho of cabecalhos(); track cabecalho) {
+          <th>
+            {{ cabecalho }}
+          </th>
+        }
+
+        <th class="coluna-acoes">Ações</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @if (dados().length === 0) {
+        <tr>
+          <td class="mensagem-vazia" [attr.colspan]="cabecalhos().length + 1">
+            {{ mensagemVazia() }}
+          </td>
+        </tr>
+      } @else {
+        @for (linha of dados(); track linha.id) {
+          <tr (click)="linhaClicada.emit(linha.id)">
+            @for (valor of linha.valores; track $index) {
+              <td>
+                {{ valor }}
+              </td>
+            }
+
+            <td class="acoes">
+              <button
+                type="button"
+                class="acao"
+                (click)="$event.stopPropagation(); navegarClicado.emit(linha.id)"
+              >
+                <app-seta tipo="direita" />
+              </button>
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</div>

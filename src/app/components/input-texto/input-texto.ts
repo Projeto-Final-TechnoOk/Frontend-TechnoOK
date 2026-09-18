@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 @Component({
   imports: [],
@@ -13,5 +13,6 @@ export class InputTextoComponent {
   name = input.required<string>();
   required = input(false);
 
+  valorAlterado = output<string>();
   erro = input<string>('');
 }

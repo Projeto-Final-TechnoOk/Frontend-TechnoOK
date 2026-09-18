@@ -47,6 +47,10 @@
   --cor-grafico-azul-claro: #b5ceff;
   --cor-grafico-verde: #409338;
   --cor-grafico-vermelho: #cb2e34;
+
+  /* Tabelas */
+  --cor-header-tabela: #eff1ff;
+  --cor-borda-tabela: #eef2f3;
 }
 
 * {

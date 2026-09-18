@@ -1,7 +1,13 @@
 <label [for]="name()">
   {{ label() }}
 </label>
-<input [id]="name()" [name]="name()" [type]="type()" [placeholder]="placeholder()" />
+<input
+  [id]="name()"
+  [name]="name()"
+  [type]="type()"
+  [placeholder]="placeholder()"
+  (input)="valorAlterado.emit($any($event.target).value)"
+/>
 
 @if (erro()) {
   <small class="mensagem-erro"> {{ erro() }}</small>

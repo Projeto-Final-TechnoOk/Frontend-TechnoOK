@@ -1,0 +1,75 @@
+.overlay {
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.35);
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  z-index: 1000;
+}
+
+.formulario {
+  width: 450px;
+
+  background: var(--cor-branco);
+
+  border-radius: 10px;
+
+  padding: 24px;
+}
+
+.cabecalho {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 20px;
+}
+
+.cabecalho h2 {
+  margin: 0;
+}
+
+.fechar {
+  border: none;
+
+  background: none;
+
+  font-size: 24px;
+
+  cursor: pointer;
+}
+
+.conteudo {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+.erro {
+  margin-top: 12px;
+
+  font-size: 14px;
+
+  color: var(--cor-erro);
+}
+
+.acoes {
+  margin-top: 24px;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+}

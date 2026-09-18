@@ -1,12 +1,14 @@
 <div class="card">
   <div class="topo">
-    <div class="textos">
-      <h2 class="titulo">{{ titulo() }}</h2>
+    @if (titulo()) {
+      <div class="textos">
+        <h2 class="titulo">{{ titulo() }}</h2>
 
-      @if (subtitulo()) {
-        <p class="subtitulo">{{ subtitulo() }}</p>
-      }
-    </div>
+        @if (subtitulo()) {
+          <p class="subtitulo">{{ subtitulo() }}</p>
+        }
+      </div>
+    }
 
     @if (redirecionamento()) {
       <div class="redirecionamento" [routerLink]="redirecionamento()">
@@ -15,7 +17,7 @@
     }
   </div>
 
-  <div class="conteudo">
+  <div class="conteudo" [class.sem-topo]="!titulo() && !redirecionamento()">
     <ng-content></ng-content>
   </div>
 </div>

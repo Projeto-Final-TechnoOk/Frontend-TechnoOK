@@ -1,1 +1,65 @@
-<p>imoveis works!</p>
+<div class="conteudo">
+  <div class="topo">
+    <div class="texto-topo">
+      <h1>Imóveis</h1>
+      <p>Gerencie os imóveis cadastrados no sistema.</p>
+    </div>
+    <app-card class="card-contador">
+      <div class="contador-conteudo">
+        <div class="contador-textos">
+          <h3>Imóveis</h3>
+          <p>Imóveis cadastrados</p>
+        </div>
+
+        <span class="valor-contador">
+          {{ quantidadeImoveis() }}
+        </span>
+      </div>
+    </app-card>
+  </div>
+
+  <app-card class="tabela">
+    <div class="linha-de-acoes">
+      <app-input-texto
+        name="busca"
+        placeholder="Busque imóveis a partir do nome ou endereço..."
+        (valorAlterado)="filtrarImoveis($event)"
+      ></app-input-texto>
+      <app-botao
+        texto="Novo Imóvel"
+        type="button"
+        variante="primario"
+        (clicado)="alterarFormulario('criacao', true)"
+      ></app-botao>
+    </div>
+
+    <app-tabela
+      [cabecalhos]="cabecalhosTabela"
+      [dados]="dadosTabela()"
+      mensagemVazia="Nenhum imóvel encontrado."
+      (linhaClicada)="abrirResumo($event)"
+      (navegarClicado)="abrirImovel($event)"
+    />
+  </app-card>
+</div>
+@if (formularioCriacaoAberto()) {
+  <app-formulario
+    titulo="Novo imóvel"
+    (fechar)="alterarFormulario('criacao', false)"
+    (salvar)="salvarImovel()"
+  >
+    <app-input-texto
+      name="nome"
+      label="Nome"
+      placeholder="Digite o nome"
+      (valorAlterado)="nomeFormulario = $event"
+    />
+
+    <app-input-texto
+      name="endereco"
+      label="Endereço"
+      placeholder="Digite o endereço"
+      (valorAlterado)="enderecoFormulario = $event"
+    />
+  </app-formulario>
+}

@@ -1,0 +1,27 @@
+<div class="overlay">
+  <div class="formulario">
+    <div class="cabecalho">
+      <h2>
+        {{ titulo() }}
+      </h2>
+
+      <button class="fechar" type="button" (click)="fechar.emit()">×</button>
+    </div>
+
+    <div class="conteudo">
+      <ng-content></ng-content>
+    </div>
+
+    @if (erro()) {
+      <p class="erro">
+        {{ erro() }}
+      </p>
+    }
+
+    <div class="acoes">
+      <app-botao texto="Cancelar" variante="secundario" (clicado)="fechar.emit()" />
+
+      <app-botao texto="Salvar" variante="primario" (clicado)="salvar.emit()" />
+    </div>
+  </div>
+</div>
