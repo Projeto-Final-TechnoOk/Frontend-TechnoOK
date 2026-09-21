@@ -1,20 +1,18 @@
 <div class="tabela-container">
-  <table>
-    <thead>
-      <tr>
-        @for (cabecalho of cabecalhos(); track cabecalho) {
-          <th>
-            {{ cabecalho }}
-          </th>
-        }
-
-        <th class="coluna-acoes">Ações</th>
-      </tr>
-    </thead>
-  </table>
-
   <div class="tabela-scroll">
     <table>
+      <thead>
+        <tr>
+          @for (cabecalho of cabecalhos(); track cabecalho) {
+            <th>
+              {{ cabecalho }}
+            </th>
+          }
+
+          <th class="coluna-acoes">Ações</th>
+        </tr>
+      </thead>
+
       <tbody>
         @if (dados().length === 0) {
           <tr>
@@ -27,7 +25,11 @@
             <tr [class.linha-clicavel]="linhaClicavel()" (click)="linhaClicada.emit(linha.id)">
               @for (valor of linha.valores; track $index) {
                 <td>
-                  {{ valor }}
+                  @if (ehTag(valor)) {
+                    <app-tag [texto]="valor.texto" [variante]="valor.variante" />
+                  } @else {
+                    {{ valor }}
+                  }
                 </td>
               }
 

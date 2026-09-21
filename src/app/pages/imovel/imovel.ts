@@ -1,7 +1,8 @@
 import { ActivatedRoute } from '@angular/router';
 import { Component, inject, OnInit } from '@angular/core';
 
-import { ImoveisService, Imovel } from '../../services/imoveis';
+import { ImoveisService } from '../../services/imoveis';
+import { Imovel } from '../../models/imoveis/imovel.model';
 
 @Component({
   selector: 'app-imovel',

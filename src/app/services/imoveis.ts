@@ -5,19 +5,13 @@ import { Observable } from 'rxjs';
 import { environment } from '../../enviroments/enviroment';
 import { CriarImovelDto } from '../models/imoveis/criar-imovel.dto';
 import { AtualizarImovelDto } from '../models/imoveis/atualizar-imovel.dto';
-
-export interface Imovel {
-  id: string;
-  nome: string;
-  endereco: string;
-}
+import { Imovel } from '../models/imoveis/imovel.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ImoveisService {
   private readonly http = inject(HttpClient);
-
   private readonly apiUrl = `${environment.apiUrl}/imoveis`;
 
   listar(): Observable<Imovel[]> {

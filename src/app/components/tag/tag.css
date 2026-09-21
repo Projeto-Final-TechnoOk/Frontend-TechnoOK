@@ -1,0 +1,29 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 4px 10px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.energia {
+  background-color: var(--cor-amarelo-energia);
+  color: var(--cor-texto-primario);
+}
+
+.agua {
+  background-color: var(--cor-azul-agua);
+  color: var(--cor-texto-primario);
+}
+
+.gas {
+  background-color: var(--cor-verde-gas);
+  color: var(--cor-texto-primario);
+}

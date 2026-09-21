@@ -1,9 +1,109 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 
+import { LinhaTabela, TabelaComponent } from '../../components/tabela/tabela';
+import { InputTextoComponent } from '../../components/input-texto/input-texto';
+import { BotaoComponent } from '../../components/botao/botao';
+import { CardComponent } from '../../components/card/card';
+
+import { MedidoresService } from '../../services/medidores';
+import { MedidorListagem } from '../../models/medidores/medidor-listagem';
+
+import { TipoMedidor } from '../../enums/medidores/tipo-medidor';
+import { TextoTag, VarianteTag } from '../../components/tag/tag';
 @Component({
-  imports: [],
+  imports: [TabelaComponent, InputTextoComponent, BotaoComponent, CardComponent],
   selector: 'app-medidores',
   styleUrl: './medidores.css',
   templateUrl: './medidores.html',
 })
-export class MedidoresPage {}
+export class MedidoresPage implements OnInit {
+  private readonly medidoresService = inject(MedidoresService);
+
+  medidores = signal<MedidorListagem[]>([]);
+
+  ngOnInit(): void {
+    this.carregarMedidores();
+    this.carregarQuantidade();
+  }
+
+  // Topo
+  quantidadeMedidores = signal<number>(0);
+
+  carregarQuantidade(): void {
+    this.medidoresService.contar().subscribe({
+      next: (quantidade) => {
+        this.quantidadeMedidores.set(quantidade);
+      },
+
+      error: (erro) => {
+        console.error('Erro ao carregar quantidade de medidores:', erro);
+      },
+    });
+  }
+
+  //Tabela + Filtro
+  cabecalhosTabela = ['Identificador', 'Tipo', 'Imóvel'];
+  dadosTabela = signal<LinhaTabela[]>([]);
+
+  carregarMedidores(): void {
+    this.medidoresService.listar().subscribe({
+      next: (medidores) => {
+        this.medidores.set(medidores);
+
+        this.atualizarTabela(medidores);
+      },
+
+      error: (erro) => {
+        console.error('Erro ao carregar medidores:', erro);
+      },
+    });
+  }
+
+  atualizarTabela(medidores: MedidorListagem[]): void {
+    const dados = medidores.map((medidor) => ({
+      id: medidor.id,
+
+      valores: [medidor.identificador, this.tipoMedidorParaTag(medidor.tipo), medidor.imovelNome],
+    }));
+
+    this.dadosTabela.set(dados);
+  }
+
+  filtrarMedidores(valor: string): void {
+    const termo = valor.toLowerCase();
+
+    const filtrados = this.medidores().filter(
+      (medidor) =>
+        medidor.identificador.toLowerCase().includes(termo) ||
+        medidor.tipo.toLowerCase().includes(termo) ||
+        medidor.imovelNome.toLowerCase().includes(termo),
+    );
+
+    this.atualizarTabela(filtrados);
+  }
+
+  tipoMedidorParaTag(tipo: TipoMedidor): {
+    texto: TextoTag;
+    variante: VarianteTag;
+  } {
+    switch (tipo) {
+      case TipoMedidor.ENERGIA:
+        return {
+          texto: 'Energia',
+          variante: 'energia',
+        };
+
+      case TipoMedidor.AGUA:
+        return {
+          texto: 'Água',
+          variante: 'agua',
+        };
+
+      case TipoMedidor.GAS:
+        return {
+          texto: 'Gás',
+          variante: 'gas',
+        };
+    }
+  }
+}

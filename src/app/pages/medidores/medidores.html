@@ -1,1 +1,39 @@
-<p>medidores works!</p>
+<div class="conteudo">
+  <div class="topo">
+    <div class="texto-topo">
+      <h1>Medidores</h1>
+      <p>Gerencie os medidores cadastrados no sistema.</p>
+    </div>
+
+    <app-card class="card-contador">
+      <div class="contador-conteudo">
+        <div class="contador-textos">
+          <h3>Medidores</h3>
+          <p>Medidores cadastrados</p>
+        </div>
+
+        <span class="valor-contador">
+          {{ quantidadeMedidores() }}
+        </span>
+      </div>
+    </app-card>
+  </div>
+
+  <app-card class="tabela">
+    <div class="linha-de-acoes">
+      <app-input-texto
+        name="busca"
+        placeholder="Busque medidores a partir do identificador, tipo ou imóvel..."
+        (valorAlterado)="filtrarMedidores($event)"
+      />
+
+      <app-botao texto="Novo Medidor" type="button" variante="primario" />
+    </div>
+
+    <app-tabela
+      [cabecalhos]="cabecalhosTabela"
+      [dados]="dadosTabela()"
+      mensagemVazia="Nenhum medidor encontrado."
+    />
+  </app-card>
+</div>

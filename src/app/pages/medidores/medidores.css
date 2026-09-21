@@ -1,0 +1,91 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Cabeçalho */
+
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.texto-topo h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--cor-texto-primario);
+}
+
+.texto-topo p {
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--cor-texto-secundario);
+}
+
+/* Card contador */
+
+.card-contador {
+  width: 260px;
+}
+
+.contador-conteudo {
+  display: flex;
+  align-items: center;
+  gap: 55px;
+}
+
+.contador-textos h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--cor-texto-primario);
+}
+
+.contador-textos p {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--cor-texto-secundario);
+}
+
+.valor-contador {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--cor-texto-primario);
+}
+
+/* Barra superior */
+
+.linha-de-acoes {
+  display: flex;
+  align-items: end;
+  gap: 16px;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.linha-de-acoes app-input-texto {
+  flex: 1;
+}
+
+.linha-de-acoes app-botao {
+  min-width: 140px;
+}
+
+button {
+  white-space: nowrap;
+}
+
+/* Tabela */
+
+app-tabela {
+  display: block;
+}

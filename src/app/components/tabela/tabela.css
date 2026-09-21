@@ -32,6 +32,10 @@ thead th {
   font-size: 16px;
   font-weight: 600;
   text-align: left;
+
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 thead th:first-child {
@@ -60,6 +64,7 @@ tbody tr:hover td {
 }
 
 .coluna-acoes {
+  width: 80px;
   text-align: right;
 }
 

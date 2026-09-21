@@ -1,11 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Service } from '@angular/core';
-import { environment } from '../../enviroments/enviroment';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
+
+import { environment } from '../../enviroments/enviroment';
 import { MedidorListagem } from '../models/medidores/medidor-listagem';
 import { ConsumoPeriodo } from '../models/medidores/consumo-periodo.model';
 
-@Service()
+@Injectable({
+  providedIn: 'root',
+})
 export class MedidoresService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = `${environment.apiUrl}/medidores`;
@@ -14,7 +17,10 @@ export class MedidoresService {
     return this.http.get<MedidorListagem[]>(this.apiUrl);
   }
 
-  // Consumo
+  contar(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/contar`);
+  }
+
   obterConsumo(
     medidorId: string,
     nivel: 'ano' | 'mes' | 'dia',

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 
 import { LinhaTabela, TabelaComponent } from '../../components/tabela/tabela';
-import { ImoveisService, Imovel } from '../../services/imoveis';
+import { ImoveisService } from '../../services/imoveis';
 import { InputTextoComponent } from '../../components/input-texto/input-texto';
 import { BotaoComponent } from '../../components/botao/botao';
 import { CardComponent } from '../../components/card/card';
@@ -11,6 +11,7 @@ import { PopupDetalhesComponent } from '../../components/popup-detalhes/popup-de
 import { PopupDelecaoComponent } from '../../components/popup-delecao/popup-delecao';
 import { AtualizarImovelDto } from '../../models/imoveis/atualizar-imovel.dto';
 import { Router } from '@angular/router';
+import { Imovel } from '../../models/imoveis/imovel.model';
 @Component({
   imports: [
     TabelaComponent,
@@ -99,7 +100,6 @@ export class ImoveisPage implements OnInit {
   }
 
   // Tabela + Filtro
-
   cabecalhosTabela = ['Nome', 'Endereço'];
   dadosTabela = signal<LinhaTabela[]>([]);
 
