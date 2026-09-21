@@ -70,6 +70,7 @@
     titulo="Detalhes do imóvel"
     (fechar)="fecharResumo()"
     (excluir)="abrirDelecao()"
+    (editar)="abrirEdicao()"
   >
     <div class="detalhe">
       <span>Nome</span>
@@ -90,4 +91,29 @@
     (fechar)="fecharDelecao()"
     (confirmar)="confirmarDelecao()"
   />
+}
+
+@if (formularioEdicaoAberto() && imovelSelecionado) {
+  <app-formulario
+    titulo="Editar imóvel"
+    [erro]="erroFormulario"
+    (fechar)="alterarFormulario('edicao', false)"
+    (salvar)="editarImovel()"
+  >
+    <app-input-texto
+      name="nome"
+      label="Nome"
+      placeholder="Digite o nome do imóvel"
+      [valor]="nomeFormulario"
+      (valorAlterado)="nomeFormulario = $event"
+    />
+
+    <app-input-texto
+      name="endereco"
+      label="Endereço"
+      placeholder="Digite o endereço do imóvel"
+      [valor]="enderecoFormulario"
+      (valorAlterado)="enderecoFormulario = $event"
+    />
+  </app-formulario>
 }

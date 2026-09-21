@@ -13,6 +13,8 @@ export class InputTextoComponent {
   name = input.required<string>();
   required = input(false);
 
+  valor = input<string>('');
+
   valorAlterado = output<string>();
   erro = input<string>('');
 }

@@ -9,6 +9,7 @@ import { FormularioComponent } from '../../components/formulario/formulario';
 import { CriarImovelDto } from '../../models/imoveis/criar-imovel.dto';
 import { PopupDetalhesComponent } from '../../components/popup-detalhes/popup-detalhes';
 import { PopupDelecaoComponent } from '../../components/popup-delecao/popup-delecao';
+import { AtualizarImovelDto } from '../../models/imoveis/atualizar-imovel.dto';
 @Component({
   imports: [
     TabelaComponent,
@@ -47,7 +48,7 @@ export class ImoveisPage implements OnInit {
     });
   }
 
-  // Criação
+  // Formulário de Criação
 
   nomeFormulario = '';
   enderecoFormulario = '';
@@ -55,7 +56,6 @@ export class ImoveisPage implements OnInit {
   erroFormulario = '';
 
   formularioCriacaoAberto = signal(false);
-  formularioEdicaoAberto = signal(false);
 
   alterarFormulario(tipo: 'criacao' | 'edicao', aberto: boolean) {
     this.erroFormulario = '';
@@ -189,6 +189,62 @@ export class ImoveisPage implements OnInit {
       },
       error: (erro) => {
         console.error('Erro ao excluir imóvel:', erro);
+      },
+    });
+  }
+
+  // Formulário de Edição
+
+  formularioEdicaoAberto = signal(false);
+
+  abrirEdicao(): void {
+    if (!this.imovelSelecionado) {
+      return;
+    }
+
+    this.nomeFormulario = this.imovelSelecionado.nome;
+    this.enderecoFormulario = this.imovelSelecionado.endereco;
+
+    this.alterarFormulario('edicao', true);
+    this.popupResumoAberto.set(false);
+  }
+
+  editarImovel(): void {
+    if (!this.imovelSelecionado) {
+      return;
+    }
+
+    const imovelAtualizado: AtualizarImovelDto = {
+      nome: this.nomeFormulario,
+      endereco: this.enderecoFormulario,
+    };
+
+    const id = this.imovelSelecionado.id;
+
+    this.imoveisService.atualizar(id, imovelAtualizado).subscribe({
+      next: (imovelAtualizadoBackend) => {
+        const imoveisAtuais = this.imoveis();
+
+        const novaLista = imoveisAtuais.map((imovel) => {
+          if (imovel.id === id) {
+            return imovelAtualizadoBackend;
+          }
+          return imovel;
+        });
+
+        this.imoveis.set(novaLista);
+        this.atualizarTabela(novaLista);
+
+        this.alterarFormulario('edicao', false);
+        this.imovelSelecionado = null;
+
+        this.nomeFormulario = '';
+        this.enderecoFormulario = '';
+        this.erroFormulario = '';
+      },
+
+      error: (erro) => {
+        console.error('Erro ao atualizar imóvel:', erro);
       },
     });
   }

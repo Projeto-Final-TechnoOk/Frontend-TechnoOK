@@ -12,7 +12,7 @@
 }
 
 .tabela-scroll {
-  max-height: 280px;
+  max-height: 260px;
   overflow-y: auto;
 }
 
@@ -71,14 +71,16 @@ tbody tr:hover td {
   border: none;
   background: none;
 
-  color: var(--cor-primaria);
+  color: var(--cor-preto);
   font-size: 12px;
 
   cursor: pointer;
+  padding: 0px 3px 5px 3px;
+  border-radius: 30px;
 }
 
 .acao:hover {
-  text-decoration: underline;
+  color: var(--cor-primaria);
 }
 
 .mensagem-vazia {

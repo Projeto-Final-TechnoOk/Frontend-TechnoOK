@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../enviroments/enviroment';
 import { CriarImovelDto } from '../models/imoveis/criar-imovel.dto';
+import { AtualizarImovelDto } from '../models/imoveis/atualizar-imovel.dto';
 
 export interface Imovel {
   id: string;
@@ -33,5 +34,9 @@ export class ImoveisService {
 
   deletar(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  atualizar(id: string, dto: AtualizarImovelDto): Observable<Imovel> {
+    return this.http.patch<Imovel>(`${this.apiUrl}/${id}`, dto);
   }
 }
