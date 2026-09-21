@@ -7,6 +7,7 @@ import { BotaoComponent } from '../../components/botao/botao';
 import { CardComponent } from '../../components/card/card';
 import { FormularioComponent } from '../../components/formulario/formulario';
 import { CriarImovelDto } from '../../models/imoveis/criar-imovel.dto';
+import { PopupDetalhesComponent } from '../../components/popup-detalhes/popup-detalhes';
 @Component({
   imports: [
     TabelaComponent,
@@ -14,6 +15,7 @@ import { CriarImovelDto } from '../../models/imoveis/criar-imovel.dto';
     BotaoComponent,
     CardComponent,
     FormularioComponent,
+    PopupDetalhesComponent,
   ],
   selector: 'app-imoveis',
   styleUrl: './imoveis.css',
@@ -54,6 +56,7 @@ export class ImoveisPage implements OnInit {
   formularioEdicaoAberto = signal(false);
 
   alterarFormulario(tipo: 'criacao' | 'edicao', aberto: boolean) {
+    this.erroFormulario = '';
     if (tipo === 'criacao') {
       this.formularioCriacaoAberto.set(aberto);
     }
@@ -128,11 +131,26 @@ export class ImoveisPage implements OnInit {
     this.atualizarTabela(filtrados);
   }
 
-  abrirResumo(id: string): void {
-    console.log('Abrir resumo:', id);
-  }
-
   abrirImovel(id: string): void {
     console.log('Abrir página do imóvel:', id);
+  }
+
+  // Popup de detalhes
+  popupResumoAberto = signal(false);
+  imovelSelecionado: Imovel | null = null;
+
+  abrirResumo(id: string): void {
+    const imovel = this.imoveis().find((imovel) => imovel.id === id);
+    if (!imovel) {
+      return;
+    }
+
+    this.imovelSelecionado = imovel;
+    this.popupResumoAberto.set(true);
+  }
+
+  fecharResumo(): void {
+    this.popupResumoAberto.set(false);
+    this.imovelSelecionado = null;
   }
 }

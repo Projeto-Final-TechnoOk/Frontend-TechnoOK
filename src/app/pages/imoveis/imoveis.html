@@ -47,6 +47,7 @@
     titulo="Novo imóvel"
     (fechar)="alterarFormulario('criacao', false)"
     (salvar)="salvarImovel()"
+    [erro]="erroFormulario"
   >
     <app-input-texto
       name="nome"
@@ -62,4 +63,18 @@
       (valorAlterado)="enderecoFormulario = $event"
     />
   </app-formulario>
+}
+
+@if (popupResumoAberto() && imovelSelecionado) {
+  <app-popup-detalhes titulo="Detalhes do imóvel" (fechar)="fecharResumo()">
+    <div class="detalhe">
+      <span>Nome</span>
+      <p>{{ imovelSelecionado.nome }}</p>
+    </div>
+
+    <div class="detalhe">
+      <span>Endereço</span>
+      <p>{{ imovelSelecionado.endereco }}</p>
+    </div>
+  </app-popup-detalhes>
 }

@@ -11,35 +11,41 @@
         <th class="coluna-acoes">Ações</th>
       </tr>
     </thead>
+  </table>
 
-    <tbody>
-      @if (dados().length === 0) {
-        <tr>
-          <td class="mensagem-vazia" [attr.colspan]="cabecalhos().length + 1">
-            {{ mensagemVazia() }}
-          </td>
-        </tr>
-      } @else {
-        @for (linha of dados(); track linha.id) {
-          <tr (click)="linhaClicada.emit(linha.id)">
-            @for (valor of linha.valores; track $index) {
-              <td>
-                {{ valor }}
-              </td>
-            }
-
-            <td class="acoes">
-              <button
-                type="button"
-                class="acao"
-                (click)="$event.stopPropagation(); navegarClicado.emit(linha.id)"
-              >
-                <app-seta tipo="direita" />
-              </button>
+  <div class="tabela-scroll">
+    <table>
+      <tbody>
+        @if (dados().length === 0) {
+          <tr>
+            <td class="mensagem-vazia" [attr.colspan]="cabecalhos().length + 1">
+              {{ mensagemVazia() }}
             </td>
           </tr>
+        } @else {
+          @for (linha of dados(); track linha.id) {
+            <tr [class.linha-clicavel]="linhaClicavel()" (click)="linhaClicada.emit(linha.id)">
+              @for (valor of linha.valores; track $index) {
+                <td>
+                  {{ valor }}
+                </td>
+              }
+
+              <td class="coluna-acoes">
+                <div class="acoes">
+                  <button
+                    type="button"
+                    class="acao"
+                    (click)="$event.stopPropagation(); navegarClicado.emit(linha.id)"
+                  >
+                    <app-seta tipo="direita" />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
         }
-      }
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  </div>
 </div>

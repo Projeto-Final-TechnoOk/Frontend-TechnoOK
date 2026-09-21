@@ -16,6 +16,11 @@ button {
   color: var(--cor-preto);
 }
 
+.edicao {
+  background-color: var(--cor-botao-edicao);
+  color: white;
+}
+
 .perigo {
   background-color: var(--cor-botao-delecao);
   color: white;

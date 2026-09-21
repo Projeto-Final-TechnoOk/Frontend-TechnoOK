@@ -9,7 +9,7 @@ import { Component, input, output } from '@angular/core';
 export class BotaoComponent {
   texto = input.required<string>();
   type = input<'button' | 'submit' | 'reset'>('button');
-  variante = input<'primario' | 'secundario' | 'perigo'>();
+  variante = input<'primario' | 'secundario' | 'perigo' | 'edicao'>();
   desabilitado = input(false);
   larguraTotal = input(false);
 

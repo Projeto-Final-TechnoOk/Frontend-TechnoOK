@@ -17,6 +17,7 @@ export class TabelaComponent {
   dados = input.required<LinhaTabela[]>();
 
   mensagemVazia = input<string>('Nenhum registro encontrado.');
+  linhaClicavel = input(true);
 
   linhaClicada = output<string>();
   navegarClicado = output<string>();

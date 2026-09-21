@@ -1,0 +1,19 @@
+<div class="overlay">
+  <div class="popup">
+    <div class="cabecalho">
+      <h2>{{ titulo() }}</h2>
+
+      <button type="button" class="fechar" (click)="fechar.emit()">×</button>
+    </div>
+
+    <div class="conteudo">
+      <ng-content></ng-content>
+    </div>
+
+    <div class="acoes">
+      <app-botao texto="Excluir" variante="perigo" (clicado)="excluir.emit()" />
+
+      <app-botao texto="Editar" variante="edicao" (clicado)="editar.emit()" />
+    </div>
+  </div>
+</div>

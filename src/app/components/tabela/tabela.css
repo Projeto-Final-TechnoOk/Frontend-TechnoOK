@@ -11,6 +11,11 @@
   border-radius: 10px;
 }
 
+.tabela-scroll {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
 table {
   width: 100%;
 
@@ -48,6 +53,10 @@ tbody td {
 
 tbody tr:hover td {
   background-color: var(--cor-background);
+}
+
+.linha-clicavel {
+  cursor: pointer;
 }
 
 .coluna-acoes {
