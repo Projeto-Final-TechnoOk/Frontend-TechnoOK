@@ -21,6 +21,10 @@ export class MedidoresService {
     return this.http.get<number>(`${this.apiUrl}/contar`);
   }
 
+  deletar(id: string): Observable<{ mensagem: string }> {
+    return this.http.delete<{ mensagem: string }>(`${this.apiUrl}/${id}`);
+  }
+
   obterConsumo(
     medidorId: string,
     nivel: 'ano' | 'mes' | 'dia',

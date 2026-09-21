@@ -138,6 +138,7 @@ export class ImoveisPage implements OnInit {
   abrirImovel(id: string): void {
     this.router.navigate(['/imoveis', id]);
   }
+
   // Popup de detalhes
   popupResumoAberto = signal(false);
   imovelSelecionado: Imovel | null = null;

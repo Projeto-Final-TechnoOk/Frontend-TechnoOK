@@ -10,8 +10,19 @@ import { MedidorListagem } from '../../models/medidores/medidor-listagem';
 
 import { TipoMedidor } from '../../enums/medidores/tipo-medidor';
 import { TextoTag, VarianteTag } from '../../components/tag/tag';
+import { TagComponent } from '../../components/tag/tag';
+import { PopupDetalhesComponent } from '../../components/popup-detalhes/popup-detalhes';
+import { PopupDelecaoComponent } from '../../components/popup-delecao/popup-delecao';
 @Component({
-  imports: [TabelaComponent, InputTextoComponent, BotaoComponent, CardComponent],
+  imports: [
+    TabelaComponent,
+    InputTextoComponent,
+    BotaoComponent,
+    CardComponent,
+    PopupDetalhesComponent,
+    TagComponent,
+    PopupDelecaoComponent,
+  ],
   selector: 'app-medidores',
   styleUrl: './medidores.css',
   templateUrl: './medidores.html',
@@ -105,5 +116,62 @@ export class MedidoresPage implements OnInit {
           variante: 'gas',
         };
     }
+  }
+
+  // Popup de Detalhes
+  medidorSelecionado: MedidorListagem | null = null;
+  popupResumoAberto = signal(false);
+
+  abrirResumo(id: string): void {
+    const medidor = this.medidores().find((medidor) => medidor.id === id);
+
+    if (!medidor) {
+      return;
+    }
+
+    this.medidorSelecionado = medidor;
+    this.popupResumoAberto.set(true);
+  }
+
+  fecharResumo(): void {
+    this.popupResumoAberto.set(false);
+    this.medidorSelecionado = null;
+  }
+
+  // Popup Deleção
+  popupDelecaoAberto = signal(false);
+
+  abrirDelecao(): void {
+    this.popupDelecaoAberto.set(true);
+    this.popupResumoAberto.set(false);
+  }
+
+  fecharDelecao(): void {
+    this.popupDelecaoAberto.set(false);
+  }
+
+  confirmarDelecao(): void {
+    if (!this.medidorSelecionado) {
+      return;
+    }
+    const id = this.medidorSelecionado.id;
+
+    this.medidoresService.deletar(id).subscribe({
+      next: () => {
+        const medidoresAtuais = this.medidores();
+        const novaLista = medidoresAtuais.filter((medidor) => medidor.id !== id);
+
+        this.medidores.set(novaLista);
+        this.atualizarTabela(novaLista);
+        this.carregarQuantidade();
+
+        this.fecharDelecao();
+        this.fecharResumo();
+      },
+
+      error: (erro) => {
+        console.error('Erro ao excluir medidor:', erro);
+      },
+    });
   }
 }

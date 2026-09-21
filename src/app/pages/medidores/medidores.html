@@ -34,6 +34,47 @@
       [cabecalhos]="cabecalhosTabela"
       [dados]="dadosTabela()"
       mensagemVazia="Nenhum medidor encontrado."
+      [linhaClicavel]="true"
+      (linhaClicada)="abrirResumo($event)"
     />
   </app-card>
 </div>
+
+@if (popupResumoAberto() && medidorSelecionado) {
+  <app-popup-detalhes
+    titulo="Detalhes do medidor"
+    (fechar)="fecharResumo()"
+    (excluir)="abrirDelecao()"
+  >
+    <div class="detalhe">
+      <span>Identificador</span>
+      <p>{{ medidorSelecionado.identificador }}</p>
+    </div>
+
+    <div class="detalhe">
+      <span>Tipo</span>
+      <app-tag
+        [texto]="tipoMedidorParaTag(medidorSelecionado.tipo).texto"
+        [variante]="tipoMedidorParaTag(medidorSelecionado.tipo).variante"
+      />
+    </div>
+
+    <div class="detalhe">
+      <span>Imóvel</span>
+      <p>{{ medidorSelecionado.imovelNome }}</p>
+    </div>
+  </app-popup-detalhes>
+}
+
+@if (popupDelecaoAberto() && medidorSelecionado) {
+  <app-popup-delecao
+    titulo="Excluir medidor e suas leituras?"
+    [mensagem]="
+      'Ao excluir o medidor ' +
+      medidorSelecionado.identificador +
+      ' todas as suas leituras também serão excluidas. Tem certeza que deseja concluir a exclusão?'
+    "
+    (fechar)="fecharDelecao()"
+    (confirmar)="confirmarDelecao()"
+  />
+}

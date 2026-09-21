@@ -89,3 +89,14 @@ button {
 app-tabela {
   display: block;
 }
+
+.detalhe {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Popup Detalhes*/
+.detalhe span {
+  font-weight: 700;
+}
