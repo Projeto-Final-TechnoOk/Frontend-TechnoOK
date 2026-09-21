@@ -7,6 +7,7 @@ import { DashboardPage } from './pages/dashboard/dashboard';
 import { ImoveisPage } from './pages/imoveis/imoveis';
 import { MedidoresPage } from './pages/medidores/medidores';
 import { LeiturasPage } from './pages/leituras/leituras';
+import { ImovelPage } from './pages/imovel/imovel';
 
 export const routes: Routes = [
   {
@@ -38,6 +39,10 @@ export const routes: Routes = [
       {
         path: 'leituras',
         component: LeiturasPage,
+      },
+      {
+        path: 'imoveis/:id',
+        component: ImovelPage,
       },
     ],
   },

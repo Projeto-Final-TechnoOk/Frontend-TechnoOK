@@ -39,4 +39,8 @@ export class ImoveisService {
   atualizar(id: string, dto: AtualizarImovelDto): Observable<Imovel> {
     return this.http.patch<Imovel>(`${this.apiUrl}/${id}`, dto);
   }
+
+  buscarPorId(id: string): Observable<Imovel> {
+    return this.http.get<Imovel>(`${this.apiUrl}/${id}`);
+  }
 }

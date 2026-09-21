@@ -10,6 +10,7 @@ import { CriarImovelDto } from '../../models/imoveis/criar-imovel.dto';
 import { PopupDetalhesComponent } from '../../components/popup-detalhes/popup-detalhes';
 import { PopupDelecaoComponent } from '../../components/popup-delecao/popup-delecao';
 import { AtualizarImovelDto } from '../../models/imoveis/atualizar-imovel.dto';
+import { Router } from '@angular/router';
 @Component({
   imports: [
     TabelaComponent,
@@ -26,6 +27,7 @@ import { AtualizarImovelDto } from '../../models/imoveis/atualizar-imovel.dto';
 })
 export class ImoveisPage implements OnInit {
   private readonly imoveisService = inject(ImoveisService);
+  private readonly router = inject(Router);
 
   imoveis = signal<Imovel[]>([]);
 
@@ -134,9 +136,8 @@ export class ImoveisPage implements OnInit {
   }
 
   abrirImovel(id: string): void {
-    console.log('Abrir página do imóvel:', id);
+    this.router.navigate(['/imoveis', id]);
   }
-
   // Popup de detalhes
   popupResumoAberto = signal(false);
   imovelSelecionado: Imovel | null = null;
