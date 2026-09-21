@@ -30,4 +30,8 @@ export class ImoveisService {
   criar(dto: CriarImovelDto): Observable<Imovel> {
     return this.http.post<Imovel>(this.apiUrl, dto);
   }
+
+  deletar(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

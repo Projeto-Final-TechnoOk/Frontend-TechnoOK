@@ -8,6 +8,7 @@ import { CardComponent } from '../../components/card/card';
 import { FormularioComponent } from '../../components/formulario/formulario';
 import { CriarImovelDto } from '../../models/imoveis/criar-imovel.dto';
 import { PopupDetalhesComponent } from '../../components/popup-detalhes/popup-detalhes';
+import { PopupDelecaoComponent } from '../../components/popup-delecao/popup-delecao';
 @Component({
   imports: [
     TabelaComponent,
@@ -16,6 +17,7 @@ import { PopupDetalhesComponent } from '../../components/popup-detalhes/popup-de
     CardComponent,
     FormularioComponent,
     PopupDetalhesComponent,
+    PopupDelecaoComponent,
   ],
   selector: 'app-imoveis',
   styleUrl: './imoveis.css',
@@ -152,5 +154,42 @@ export class ImoveisPage implements OnInit {
   fecharResumo(): void {
     this.popupResumoAberto.set(false);
     this.imovelSelecionado = null;
+  }
+
+  // Popup de deleção
+
+  popupDelecaoAberto = signal(false);
+
+  abrirDelecao(): void {
+    this.popupDelecaoAberto.set(true);
+    this.popupResumoAberto.set(false);
+  }
+
+  fecharDelecao(): void {
+    this.popupDelecaoAberto.set(false);
+  }
+
+  confirmarDelecao(): void {
+    if (!this.imovelSelecionado) {
+      return;
+    }
+    const id = this.imovelSelecionado.id;
+
+    this.imoveisService.deletar(id).subscribe({
+      next: () => {
+        const imoveisAtuais = this.imoveis();
+        const novaLista = imoveisAtuais.filter((imovel) => imovel.id !== id);
+
+        this.imoveis.set(novaLista);
+        this.atualizarTabela(novaLista);
+
+        this.carregarQuantidade();
+        this.fecharDelecao();
+        this.fecharResumo();
+      },
+      error: (erro) => {
+        console.error('Erro ao excluir imóvel:', erro);
+      },
+    });
   }
 }

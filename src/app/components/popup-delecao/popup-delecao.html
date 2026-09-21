@@ -1,1 +1,19 @@
-<p>popup-delecao works!</p>
+<div class="overlay">
+  <div class="popup">
+    <div class="cabecalho">
+      <h2>{{ titulo() }}</h2>
+
+      <button type="button" class="fechar" (click)="fechar.emit()">×</button>
+    </div>
+
+    <div class="conteudo">
+      <p>{{ mensagem() }}</p>
+    </div>
+
+    <div class="acoes">
+      <app-botao texto="Excluir" variante="perigo" (clicado)="confirmar.emit()" />
+
+      <app-botao texto="Cancelar" variante="secundario" (clicado)="fechar.emit()" />
+    </div>
+  </div>
+</div>

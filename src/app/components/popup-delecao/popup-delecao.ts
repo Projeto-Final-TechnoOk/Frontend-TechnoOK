@@ -1,9 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, input, output } from '@angular/core';
+
+import { BotaoComponent } from '../botao/botao';
 
 @Component({
-  imports: [],
   selector: 'app-popup-delecao',
-  styleUrl: './popup-delecao.css',
+  imports: [BotaoComponent],
   templateUrl: './popup-delecao.html',
+  styleUrl: './popup-delecao.css',
 })
-export class PopupDelecao {}
+export class PopupDelecaoComponent {
+  titulo = input.required<string>();
+
+  mensagem = input.required<string>();
+
+  fechar = output<void>();
+
+  confirmar = output<void>();
+}
