@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 
-import { LinhaTabela, TabelaComponent } from '../../components/tabela/tabela';
+import { LinhaTabela, LinkTabela, TabelaComponent } from '../../components/tabela/tabela';
 import { InputTextoComponent } from '../../components/input-texto/input-texto';
 import { BotaoComponent } from '../../components/botao/botao';
 import { CardComponent } from '../../components/card/card';
@@ -18,6 +18,8 @@ import { OpcaoSelect, SelectComponent } from '../../components/select/select';
 import { ImoveisService } from '../../services/imoveis';
 import { FormularioComponent } from '../../components/formulario/formulario';
 import { CriarMedidorDto } from '../../models/medidores/criar-medidor.dto';
+import { AtualizarMedidorDto } from '../../models/medidores/atualizar-medidor.dto';
+import { Router } from '@angular/router';
 @Component({
   imports: [
     TabelaComponent,
@@ -37,6 +39,7 @@ import { CriarMedidorDto } from '../../models/medidores/criar-medidor.dto';
 export class MedidoresPage implements OnInit {
   private readonly medidoresService = inject(MedidoresService);
   private readonly imoveisService = inject(ImoveisService);
+  private readonly router = inject(Router);
 
   medidores = signal<MedidorListagem[]>([]);
 
@@ -170,7 +173,14 @@ export class MedidoresPage implements OnInit {
     const dados = medidores.map((medidor) => ({
       id: medidor.id,
 
-      valores: [medidor.identificador, this.tipoMedidorParaTag(medidor.tipo), medidor.imovelNome],
+      valores: [
+        medidor.identificador,
+        this.tipoMedidorParaTag(medidor.tipo),
+        {
+          texto: medidor.imovelNome,
+          id: medidor.imovelId,
+        } as LinkTabela,
+      ],
     }));
 
     this.dadosTabela.set(dados);
@@ -214,6 +224,14 @@ export class MedidoresPage implements OnInit {
     }
   }
 
+  abrirMedidor(id: string): void {
+    this.router.navigate(['/medidores', id]);
+  }
+
+  abrirImovel(id: string): void {
+    this.router.navigate(['/imoveis', id]);
+  }
+
   // Popup de Detalhes
   medidorSelecionado: MedidorListagem | null = null;
   popupResumoAberto = signal(false);
@@ -236,6 +254,76 @@ export class MedidoresPage implements OnInit {
 
   // Formulário de edição
   formularioEdicaoAberto = signal(false);
+
+  abrirEdicao(): void {
+    if (!this.medidorSelecionado) {
+      return;
+    }
+
+    this.formularioEdicaoAberto.set(true);
+
+    this.identificadorFormulario = this.medidorSelecionado.identificador;
+    this.tipoFormulario = this.medidorSelecionado.tipo;
+    this.imovelFormulario = this.medidorSelecionado.imovelId;
+    this.popupResumoAberto.set(false);
+  }
+
+  editarMedidor(): void {
+    if (!this.medidorSelecionado) {
+      return;
+    }
+
+    if (!this.identificadorFormulario || !this.tipoFormulario || !this.imovelFormulario) {
+      this.erroFormulario = 'Preencha todos os campos.';
+      return;
+    }
+
+    this.erroFormulario = '';
+
+    const medidorAtualizado: AtualizarMedidorDto = {
+      identificador: this.identificadorFormulario,
+      tipo: this.tipoFormulario,
+      imovelId: this.imovelFormulario,
+    };
+
+    const id = this.medidorSelecionado.id;
+
+    this.medidoresService.atualizar(id, medidorAtualizado).subscribe({
+      next: (medidorAtualizadoBackend) => {
+        const medidoresAtuais = this.medidores();
+
+        const novaLista = medidoresAtuais.map((medidor) => {
+          if (medidor.id === id) {
+            return {
+              ...medidor,
+              identificador: medidorAtualizadoBackend.identificador,
+              tipo: medidorAtualizadoBackend.tipo,
+              imovelId: medidorAtualizadoBackend.imovel.id,
+              imovelNome: medidorAtualizadoBackend.imovel.nome,
+            };
+          }
+
+          return medidor;
+        });
+
+        this.medidores.set(novaLista);
+        this.atualizarTabela(novaLista);
+
+        this.alterarFormulario('edicao', false);
+
+        this.medidorSelecionado = null;
+
+        this.identificadorFormulario = '';
+        this.tipoFormulario = '';
+        this.imovelFormulario = '';
+        this.erroFormulario = '';
+      },
+
+      error: (erro) => {
+        console.error('Erro ao atualizar medidor:', erro);
+      },
+    });
+  }
 
   // Popup Deleção
   popupDelecaoAberto = signal(false);

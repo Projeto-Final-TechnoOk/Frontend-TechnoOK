@@ -94,3 +94,21 @@ tbody tr:hover td {
   text-align: center;
   color: var(--cor-texto-secundario);
 }
+
+.link-tabela {
+  border: none;
+  border-radius: 6px;
+  background: none;
+  padding: 0px 6px 0px 6px;
+  margin: 0;
+
+  font: inherit;
+  color: inherit;
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.link-tabela:hover {
+  background-color: var(--cor-cinza-apagado);
+}

@@ -27,6 +27,14 @@
                 <td>
                   @if (ehTag(valor)) {
                     <app-tag [texto]="valor.texto" [variante]="valor.variante" />
+                  } @else if (ehLink(valor)) {
+                    <button
+                      type="button"
+                      class="link-tabela"
+                      (click)="$event.stopPropagation(); linkClicado.emit(valor.id)"
+                    >
+                      {{ valor.texto }}
+                    </button>
                   } @else {
                     {{ valor }}
                   }

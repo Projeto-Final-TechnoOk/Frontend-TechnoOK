@@ -8,9 +8,13 @@ export interface TagTabela {
 }
 export interface LinhaTabela {
   id: string;
-  valores: (string | TagTabela)[];
+  valores: (string | TagTabela | LinkTabela)[];
 }
 
+export interface LinkTabela {
+  texto: string;
+  id: string;
+}
 @Component({
   selector: 'app-tabela',
   templateUrl: './tabela.html',
@@ -24,10 +28,15 @@ export class TabelaComponent {
   mensagemVazia = input<string>('Nenhum registro encontrado.');
   linhaClicavel = input(true);
 
+  linkClicado = output<string>();
   linhaClicada = output<string>();
   navegarClicado = output<string>();
 
-  ehTag(valor: string | TagTabela): valor is TagTabela {
-    return typeof valor !== 'string';
+  ehTag(valor: string | TagTabela | LinkTabela): valor is TagTabela {
+    return typeof valor !== 'string' && 'variante' in valor;
+  }
+
+  ehLink(valor: string | TagTabela | LinkTabela): valor is LinkTabela {
+    return typeof valor !== 'string' && 'id' in valor;
   }
 }

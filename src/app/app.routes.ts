@@ -8,6 +8,7 @@ import { ImoveisPage } from './pages/imoveis/imoveis';
 import { MedidoresPage } from './pages/medidores/medidores';
 import { LeiturasPage } from './pages/leituras/leituras';
 import { ImovelPage } from './pages/imovel/imovel';
+import { MedidorPage } from './pages/medidor/medidor';
 
 export const routes: Routes = [
   {
@@ -43,6 +44,10 @@ export const routes: Routes = [
       {
         path: 'imoveis/:id',
         component: ImovelPage,
+      },
+      {
+        path: 'medidores/:id',
+        component: MedidorPage,
       },
     ],
   },

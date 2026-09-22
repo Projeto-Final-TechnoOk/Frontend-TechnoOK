@@ -41,6 +41,8 @@
       mensagemVazia="Nenhum medidor encontrado."
       [linhaClicavel]="true"
       (linhaClicada)="abrirResumo($event)"
+      (navegarClicado)="abrirMedidor($event)"
+      (linkClicado)="abrirImovel($event)"
     />
   </app-card>
 </div>
@@ -82,6 +84,7 @@
   <app-popup-detalhes
     titulo="Detalhes do medidor"
     (fechar)="fecharResumo()"
+    (editar)="abrirEdicao()"
     (excluir)="abrirDelecao()"
   >
     <div class="detalhe">
@@ -102,6 +105,40 @@
       <p>{{ medidorSelecionado.imovelNome }}</p>
     </div>
   </app-popup-detalhes>
+}
+
+@if (formularioEdicaoAberto()) {
+  <app-formulario
+    titulo="Editar Medidor"
+    [erro]="erroFormulario"
+    (fechar)="alterarFormulario('edicao', false)"
+    (salvar)="editarMedidor()"
+  >
+    <app-input-texto
+      name="identificador"
+      label="Identificador"
+      placeholder="Digite o identificador"
+      [required]="true"
+      [valor]="identificadorFormulario"
+      (valorAlterado)="identificadorFormulario = $event"
+    />
+
+    <app-select
+      label="Tipo"
+      placeholder="Selecione o tipo"
+      [opcoes]="opcoesTipoMedidor"
+      [valor]="tipoFormulario"
+      (valorAlterado)="tipoFormulario = $any($event)"
+    />
+
+    <app-select
+      label="Imóvel"
+      placeholder="Selecione o imóvel"
+      [opcoes]="opcoesImoveis"
+      [valor]="imovelFormulario"
+      (valorAlterado)="imovelFormulario = $event"
+    />
+  </app-formulario>
 }
 
 @if (popupDelecaoAberto() && medidorSelecionado) {

@@ -7,6 +7,7 @@ import { MedidorListagem } from '../models/medidores/medidor-listagem';
 import { ConsumoPeriodo } from '../models/medidores/consumo-periodo.model';
 import { CriarMedidorDto } from '../models/medidores/criar-medidor.dto';
 import { Medidor } from '../models/medidores/medidor.model';
+import { AtualizarMedidorDto } from '../models/medidores/atualizar-medidor.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,10 @@ export class MedidoresService {
 
   criar(dto: CriarMedidorDto): Observable<Medidor> {
     return this.http.post<Medidor>(this.apiUrl, dto);
+  }
+
+  atualizar(id: string, dto: AtualizarMedidorDto): Observable<Medidor> {
+    return this.http.patch<Medidor>(`${this.apiUrl}/${id}`, dto);
   }
 
   deletar(id: string): Observable<{ mensagem: string }> {
