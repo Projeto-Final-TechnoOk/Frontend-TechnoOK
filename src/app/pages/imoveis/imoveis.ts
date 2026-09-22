@@ -55,7 +55,6 @@ export class ImoveisPage implements OnInit {
 
   nomeFormulario = '';
   enderecoFormulario = '';
-
   erroFormulario = '';
 
   formularioCriacaoAberto = signal(false);

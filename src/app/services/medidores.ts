@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { environment } from '../../enviroments/enviroment';
 import { MedidorListagem } from '../models/medidores/medidor-listagem';
 import { ConsumoPeriodo } from '../models/medidores/consumo-periodo.model';
+import { CriarMedidorDto } from '../models/medidores/criar-medidor.dto';
+import { Medidor } from '../models/medidores/medidor.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +21,10 @@ export class MedidoresService {
 
   contar(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/contar`);
+  }
+
+  criar(dto: CriarMedidorDto): Observable<Medidor> {
+    return this.http.post<Medidor>(this.apiUrl, dto);
   }
 
   deletar(id: string): Observable<{ mensagem: string }> {

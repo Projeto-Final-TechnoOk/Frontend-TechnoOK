@@ -27,7 +27,12 @@
         (valorAlterado)="filtrarMedidores($event)"
       />
 
-      <app-botao texto="Novo Medidor" type="button" variante="primario" />
+      <app-botao
+        texto="Novo Medidor"
+        type="button"
+        variante="primario"
+        (clicado)="alterarFormulario('criacao', true)"
+      />
     </div>
 
     <app-tabela
@@ -39,6 +44,39 @@
     />
   </app-card>
 </div>
+
+@if (formularioCriacaoAberto()) {
+  <app-formulario
+    titulo="Novo Medidor"
+    [erro]="erroFormulario"
+    (fechar)="alterarFormulario('criacao', false)"
+    (salvar)="salvarMedidor()"
+  >
+    <app-input-texto
+      name="identificador"
+      label="Identificador"
+      placeholder="Digite o identificador"
+      [required]="true"
+      (valorAlterado)="identificadorFormulario = $event"
+    />
+
+    <app-select
+      label="Tipo"
+      placeholder="Selecione o tipo"
+      [opcoes]="opcoesTipoMedidor"
+      [valor]="tipoFormulario"
+      (valorAlterado)="tipoFormulario = $any($event)"
+    />
+
+    <app-select
+      label="Imóvel"
+      placeholder="Selecione o imóvel"
+      [opcoes]="opcoesImoveis"
+      [valor]="imovelFormulario"
+      (valorAlterado)="imovelFormulario = $event"
+    />
+  </app-formulario>
+}
 
 @if (popupResumoAberto() && medidorSelecionado) {
   <app-popup-detalhes

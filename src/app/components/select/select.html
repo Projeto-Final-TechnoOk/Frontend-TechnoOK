@@ -4,14 +4,31 @@
   </label>
 }
 
-<select [value]="valor()" [class.placeholder]="!valor()" (change)="aoAlterar($event)">
-  <option value="" disabled>
-    {{ placeholder() }}
-  </option>
+<div class="select-container">
+  <button type="button" class="select-controle" [class.placeholder]="!valor()" (click)="alternar()">
+    {{ opcaoSelecionada()?.label ?? placeholder() }}
 
-  @for (opcao of opcoes(); track opcao.value) {
-    <option [value]="opcao.value">
-      {{ opcao.label }}
-    </option>
+    <span class="seta">▼</span>
+  </button>
+
+  @if (aberto()) {
+    <div class="select-opcoes">
+      <input
+        type="text"
+        class="select-busca"
+        placeholder="Digite para buscar..."
+        [value]="busca()"
+        (input)="alterarBusca($event)"
+        (click)="$event.stopPropagation()"
+      />
+
+      @for (opcao of opcoesFiltradas(); track opcao.value) {
+        <button type="button" class="select-opcao" (click)="selecionar(opcao)">
+          {{ opcao.label }}
+        </button>
+      } @empty {
+        <div class="nenhuma-opcao">Nenhuma opção encontrada.</div>
+      }
+    </div>
   }
-</select>
+</div>

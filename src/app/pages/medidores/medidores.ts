@@ -13,6 +13,11 @@ import { TextoTag, VarianteTag } from '../../components/tag/tag';
 import { TagComponent } from '../../components/tag/tag';
 import { PopupDetalhesComponent } from '../../components/popup-detalhes/popup-detalhes';
 import { PopupDelecaoComponent } from '../../components/popup-delecao/popup-delecao';
+
+import { OpcaoSelect, SelectComponent } from '../../components/select/select';
+import { ImoveisService } from '../../services/imoveis';
+import { FormularioComponent } from '../../components/formulario/formulario';
+import { CriarMedidorDto } from '../../models/medidores/criar-medidor.dto';
 @Component({
   imports: [
     TabelaComponent,
@@ -22,6 +27,8 @@ import { PopupDelecaoComponent } from '../../components/popup-delecao/popup-dele
     PopupDetalhesComponent,
     TagComponent,
     PopupDelecaoComponent,
+    FormularioComponent,
+    SelectComponent,
   ],
   selector: 'app-medidores',
   styleUrl: './medidores.css',
@@ -29,6 +36,7 @@ import { PopupDelecaoComponent } from '../../components/popup-delecao/popup-dele
 })
 export class MedidoresPage implements OnInit {
   private readonly medidoresService = inject(MedidoresService);
+  private readonly imoveisService = inject(ImoveisService);
 
   medidores = signal<MedidorListagem[]>([]);
 
@@ -50,6 +58,94 @@ export class MedidoresPage implements OnInit {
         console.error('Erro ao carregar quantidade de medidores:', erro);
       },
     });
+  }
+
+  // Formulário de Criação
+
+  identificadorFormulario = '';
+  tipoFormulario: TipoMedidor | '' = '';
+  imovelFormulario = '';
+  erroFormulario = '';
+
+  formularioCriacaoAberto = signal(false);
+
+  opcoesTipoMedidor: OpcaoSelect[] = [
+    {
+      label: 'Energia',
+      value: TipoMedidor.ENERGIA,
+    },
+    {
+      label: 'Água',
+      value: TipoMedidor.AGUA,
+    },
+    {
+      label: 'Gás',
+      value: TipoMedidor.GAS,
+    },
+  ];
+
+  opcoesImoveis: OpcaoSelect[] = [];
+
+  alterarFormulario(tipo: 'criacao' | 'edicao', aberto: boolean): void {
+    this.erroFormulario = '';
+
+    if (this.opcoesImoveis.length === 0) {
+      this.carregarOpcoesImoveis();
+    }
+
+    if (tipo === 'criacao') {
+      this.formularioCriacaoAberto.set(aberto);
+    }
+
+    if (tipo === 'edicao') {
+      this.formularioEdicaoAberto.set(aberto);
+    }
+  }
+
+  carregarOpcoesImoveis(): void {
+    this.imoveisService.listar().subscribe({
+      next: (imoveis) => {
+        this.opcoesImoveis = imoveis.map((imovel) => ({
+          label: imovel.nome,
+          value: imovel.id,
+        }));
+      },
+
+      error: (erro) => {
+        console.error('Erro ao carregar imóveis:', erro);
+      },
+    });
+  }
+
+  salvarMedidor(): void {
+    if (!this.identificadorFormulario || !this.tipoFormulario || !this.imovelFormulario) {
+      this.erroFormulario = 'Preencha todos os campos.';
+      return;
+    }
+
+    this.erroFormulario = '';
+
+    const novoMedidor: CriarMedidorDto = {
+      identificador: this.identificadorFormulario,
+      tipo: this.tipoFormulario,
+      imovelId: this.imovelFormulario,
+    };
+
+    this.medidoresService.criar(novoMedidor).subscribe({
+      next: () => {
+        this.carregarMedidores();
+        this.carregarQuantidade();
+        this.alterarFormulario('criacao', false);
+      },
+
+      error: (erro) => {
+        console.error('Erro ao criar medidor:', erro);
+      },
+    });
+
+    this.identificadorFormulario = '';
+    this.tipoFormulario = '';
+    this.imovelFormulario = '';
   }
 
   //Tabela + Filtro
@@ -137,6 +233,9 @@ export class MedidoresPage implements OnInit {
     this.popupResumoAberto.set(false);
     this.medidorSelecionado = null;
   }
+
+  // Formulário de edição
+  formularioEdicaoAberto = signal(false);
 
   // Popup Deleção
   popupDelecaoAberto = signal(false);
