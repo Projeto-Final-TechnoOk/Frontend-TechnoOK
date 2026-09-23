@@ -34,7 +34,6 @@ export class ImoveisPage implements OnInit {
 
   ngOnInit(): void {
     this.carregarImoveis();
-    this.carregarQuantidade();
   }
 
   // Topo
@@ -55,6 +54,7 @@ export class ImoveisPage implements OnInit {
 
   nomeFormulario = '';
   enderecoFormulario = '';
+
   erroFormulario = '';
 
   formularioCriacaoAberto = signal(false);
@@ -102,12 +102,20 @@ export class ImoveisPage implements OnInit {
   cabecalhosTabela = ['Nome', 'Endereço'];
   dadosTabela = signal<LinhaTabela[]>([]);
 
+  paginaAtual = signal<number>(1);
+  limite = signal<number>(50);
+  totalPaginas = signal<number>(0);
+
   carregarImoveis(): void {
-    this.imoveisService.listar().subscribe({
-      next: (imoveis) => {
-        this.imoveis.set(imoveis);
-        this.atualizarTabela(imoveis);
+    this.imoveisService.listarPaginado(this.paginaAtual(), this.limite()).subscribe({
+      next: (resposta) => {
+        this.imoveis.set(resposta.dados);
+        this.atualizarTabela(resposta.dados);
+        this.quantidadeImoveis.set(resposta.total);
+        this.paginaAtual.set(resposta.pagina);
+        this.totalPaginas.set(resposta.totalPaginas);
       },
+
       error: (erro) => {
         console.error('Erro ao carregar imóveis:', erro);
       },
@@ -121,6 +129,12 @@ export class ImoveisPage implements OnInit {
     }));
 
     this.dadosTabela.set(dados);
+  }
+
+  alterarPagina(pagina: number): void {
+    this.paginaAtual.set(pagina);
+
+    this.carregarImoveis();
   }
 
   filtrarImoveis(valor: string): void {

@@ -6,6 +6,7 @@ import { environment } from '../../enviroments/enviroment';
 import { CriarImovelDto } from '../models/imoveis/criar-imovel.dto';
 import { AtualizarImovelDto } from '../models/imoveis/atualizar-imovel.dto';
 import { Imovel } from '../models/imoveis/imovel.model';
+import { ImoveisPaginados } from '../models/imoveis/imoveis-paginados.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,12 @@ export class ImoveisService {
 
   listar(): Observable<Imovel[]> {
     return this.http.get<Imovel[]>(this.apiUrl);
+  }
+
+  listarPaginado(pagina: number, limite: number): Observable<ImoveisPaginados> {
+    return this.http.get<ImoveisPaginados>(
+      `${this.apiUrl}/paginado?pagina=${pagina}&limite=${limite}`,
+    );
   }
 
   contar(): Observable<number> {

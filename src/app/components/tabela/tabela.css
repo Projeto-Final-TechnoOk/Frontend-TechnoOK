@@ -112,3 +112,38 @@ tbody tr:hover td {
 .link-tabela:hover {
   background-color: var(--cor-cinza-apagado);
 }
+
+.paginacao {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  gap: 10px;
+  padding-top: 16px;
+}
+
+.informacao-paginacao {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cor-texto-primario);
+}
+
+.botao-paginacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  background: none;
+
+  color: var(--cor-botao-primario);
+
+  cursor: pointer;
+
+  padding: 0px 6px 4px 6px;
+  border-radius: 6px;
+}
+
+.botao-paginacao:disabled {
+  opacity: 0.35;
+  cursor: default;
+}

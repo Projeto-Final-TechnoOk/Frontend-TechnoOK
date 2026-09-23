@@ -8,6 +8,7 @@ import { ConsumoPeriodo } from '../models/medidores/consumo-periodo.model';
 import { CriarMedidorDto } from '../models/medidores/criar-medidor.dto';
 import { Medidor } from '../models/medidores/medidor.model';
 import { AtualizarMedidorDto } from '../models/medidores/atualizar-medidor.dto';
+import { MedidoresPaginados } from '../models/medidores/medidores-paginados.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,12 @@ export class MedidoresService {
 
   listar(): Observable<MedidorListagem[]> {
     return this.http.get<MedidorListagem[]>(this.apiUrl);
+  }
+
+  listarPaginado(pagina: number, limite: number): Observable<MedidoresPaginados> {
+    return this.http.get<MedidoresPaginados>(
+      `${this.apiUrl}/paginado?pagina=${pagina}&limite=${limite}`,
+    );
   }
 
   contar(): Observable<number> {

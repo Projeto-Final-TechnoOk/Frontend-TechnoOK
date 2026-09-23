@@ -1,1 +1,44 @@
-<p>leituras works!</p>
+<div class="conteudo">
+  <div class="topo">
+    <div class="texto-topo">
+      <h1>Leituras</h1>
+      <p>Visualize e acompanhe as leituras registradas pelos medidores.</p>
+    </div>
+
+    <app-card class="card-contador">
+      <div class="contador-conteudo">
+        <div class="contador-textos">
+          <h3>Leituras</h3>
+          <p>Leituras registradas</p>
+        </div>
+
+        <span class="valor-contador">
+          {{ quantidadeLeituras() }}
+        </span>
+      </div>
+    </app-card>
+  </div>
+
+  <app-card class="tabela">
+    <div class="linha-de-acoes">
+      <app-input-texto
+        name="busca"
+        placeholder="Busque leituras a partir do medidor..."
+        (valorAlterado)="filtrarLeituras($event)"
+      ></app-input-texto>
+
+      <app-botao texto="Nova Leitura" type="button" variante="primario"></app-botao>
+    </div>
+
+    <app-tabela
+      [cabecalhos]="cabecalhosTabela"
+      [dados]="dadosTabela()"
+      [exibirAcoes]="false"
+      [linhaClicavel]="true"
+      [paginaAtual]="paginaAtual()"
+      [totalPaginas]="totalPaginas()"
+      mensagemVazia="Nenhuma leitura encontrada."
+      (paginaAlterada)="alterarPagina($event)"
+    />
+  </app-card>
+</div>

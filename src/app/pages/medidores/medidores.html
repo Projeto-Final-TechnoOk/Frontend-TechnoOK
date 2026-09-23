@@ -40,9 +40,12 @@
       [dados]="dadosTabela()"
       mensagemVazia="Nenhum medidor encontrado."
       [linhaClicavel]="true"
+      [paginaAtual]="paginaAtual()"
+      [totalPaginas]="totalPaginas()"
       (linhaClicada)="abrirResumo($event)"
       (navegarClicado)="abrirMedidor($event)"
       (linkClicado)="abrirImovel($event)"
+      (paginaAlterada)="alterarPagina($event)"
     />
   </app-card>
 </div>

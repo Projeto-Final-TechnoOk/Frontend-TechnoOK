@@ -1,4 +1,5 @@
 import { Component, input, output } from '@angular/core';
+
 import { SetaComponent } from '../seta/seta';
 import { TagComponent, TextoTag, VarianteTag } from '../tag/tag';
 
@@ -6,6 +7,7 @@ export interface TagTabela {
   texto: TextoTag;
   variante: VarianteTag;
 }
+
 export interface LinhaTabela {
   id: string;
   valores: (string | TagTabela | LinkTabela)[];
@@ -15,6 +17,7 @@ export interface LinkTabela {
   texto: string;
   id: string;
 }
+
 @Component({
   selector: 'app-tabela',
   templateUrl: './tabela.html',
@@ -27,10 +30,30 @@ export class TabelaComponent {
 
   mensagemVazia = input<string>('Nenhum registro encontrado.');
   linhaClicavel = input(true);
+  exibirAcoes = input(true);
 
   linkClicado = output<string>();
   linhaClicada = output<string>();
   navegarClicado = output<string>();
+
+  // Paginação
+  paginaAtual = input<number>(1);
+
+  totalPaginas = input<number>(1);
+
+  paginaAlterada = output<number>();
+
+  paginaAnterior(): void {
+    if (this.paginaAtual() > 1) {
+      this.paginaAlterada.emit(this.paginaAtual() - 1);
+    }
+  }
+
+  proximaPagina(): void {
+    if (this.paginaAtual() < this.totalPaginas()) {
+      this.paginaAlterada.emit(this.paginaAtual() + 1);
+    }
+  }
 
   ehTag(valor: string | TagTabela | LinkTabela): valor is TagTabela {
     return typeof valor !== 'string' && 'variante' in valor;

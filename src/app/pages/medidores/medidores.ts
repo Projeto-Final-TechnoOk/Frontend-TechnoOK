@@ -155,12 +155,18 @@ export class MedidoresPage implements OnInit {
   cabecalhosTabela = ['Identificador', 'Tipo', 'Imóvel'];
   dadosTabela = signal<LinhaTabela[]>([]);
 
-  carregarMedidores(): void {
-    this.medidoresService.listar().subscribe({
-      next: (medidores) => {
-        this.medidores.set(medidores);
+  paginaAtual = signal<number>(1);
+  limite = signal<number>(50);
+  totalPaginas = signal<number>(0);
 
-        this.atualizarTabela(medidores);
+  carregarMedidores(): void {
+    this.medidoresService.listarPaginado(this.paginaAtual(), this.limite()).subscribe({
+      next: (medidores) => {
+        this.medidores.set(medidores.dados);
+        this.atualizarTabela(medidores.dados);
+        this.quantidadeMedidores.set(medidores.total);
+        this.paginaAtual.set(medidores.pagina);
+        this.totalPaginas.set(medidores.totalPaginas);
       },
 
       error: (erro) => {
@@ -230,6 +236,12 @@ export class MedidoresPage implements OnInit {
 
   abrirImovel(id: string): void {
     this.router.navigate(['/imoveis', id]);
+  }
+
+  alterarPagina(pagina: number): void {
+    this.paginaAtual.set(pagina);
+
+    this.carregarMedidores();
   }
 
   // Popup de Detalhes

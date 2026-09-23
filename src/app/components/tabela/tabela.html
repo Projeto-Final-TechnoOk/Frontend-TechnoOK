@@ -8,15 +8,19 @@
               {{ cabecalho }}
             </th>
           }
-
-          <th class="coluna-acoes">Ações</th>
+          @if (exibirAcoes()) {
+            <th class="coluna-acoes">Ações</th>
+          }
         </tr>
       </thead>
 
       <tbody>
         @if (dados().length === 0) {
           <tr>
-            <td class="mensagem-vazia" [attr.colspan]="cabecalhos().length + 1">
+            <td
+              class="mensagem-vazia"
+              [attr.colspan]="cabecalhos().length + (exibirAcoes() ? 1 : 0)"
+            >
               {{ mensagemVazia() }}
             </td>
           </tr>
@@ -41,21 +45,47 @@
                 </td>
               }
 
-              <td class="coluna-acoes">
-                <div class="acoes">
-                  <button
-                    type="button"
-                    class="acao"
-                    (click)="$event.stopPropagation(); navegarClicado.emit(linha.id)"
-                  >
-                    <app-seta tipo="direita" />
-                  </button>
-                </div>
-              </td>
+              @if (exibirAcoes()) {
+                <td class="coluna-acoes">
+                  <div class="acoes">
+                    <button
+                      type="button"
+                      class="acao"
+                      (click)="$event.stopPropagation(); navegarClicado.emit(linha.id)"
+                    >
+                      <app-seta tipo="direita" />
+                    </button>
+                  </div>
+                </td>
+              }
             </tr>
           }
         }
       </tbody>
     </table>
   </div>
+
+  @if (totalPaginas() > 1) {
+    <div class="paginacao">
+      <button
+        type="button"
+        class="botao-paginacao"
+        [disabled]="paginaAtual() === 1"
+        (click)="paginaAnterior()"
+      >
+        <app-seta tipo="esquerda" />
+      </button>
+
+      <span class="informacao-paginacao"> Página {{ paginaAtual() }} de {{ totalPaginas() }} </span>
+
+      <button
+        type="button"
+        class="botao-paginacao"
+        [disabled]="paginaAtual() === totalPaginas()"
+        (click)="proximaPagina()"
+      >
+        <app-seta tipo="direita" />
+      </button>
+    </div>
+  }
 </div>

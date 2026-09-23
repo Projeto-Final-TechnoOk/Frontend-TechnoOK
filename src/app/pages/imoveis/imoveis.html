@@ -36,7 +36,10 @@
     <app-tabela
       [cabecalhos]="cabecalhosTabela"
       [dados]="dadosTabela()"
+      [paginaAtual]="paginaAtual()"
+      [totalPaginas]="totalPaginas()"
       mensagemVazia="Nenhum imóvel encontrado."
+      (paginaAlterada)="alterarPagina($event)"
       (linhaClicada)="abrirResumo($event)"
       (navegarClicado)="abrirImovel($event)"
     />
