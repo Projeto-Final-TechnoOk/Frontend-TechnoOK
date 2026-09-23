@@ -174,13 +174,16 @@ export class ImoveisPage implements OnInit {
   // Popup de deleção
 
   popupDelecaoAberto = signal(false);
+  erroDelecao = signal<string>('');
 
   abrirDelecao(): void {
+    this.erroDelecao.set('');
     this.popupDelecaoAberto.set(true);
     this.popupResumoAberto.set(false);
   }
 
   fecharDelecao(): void {
+    this.erroDelecao.set('');
     this.popupDelecaoAberto.set(false);
   }
 
@@ -203,6 +206,8 @@ export class ImoveisPage implements OnInit {
         this.fecharResumo();
       },
       error: (erro) => {
+        this.erroDelecao.set(erro.error?.message ?? 'Não foi possível excluir o imóvel.');
+
         console.error('Erro ao excluir imóvel:', erro);
       },
     });

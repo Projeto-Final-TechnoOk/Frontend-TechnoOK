@@ -9,6 +9,7 @@ import { BotaoComponent } from '../botao/botao';
 })
 export class PopupDetalhesComponent {
   titulo = input.required<string>();
+  mostrarBotoes = input<boolean>(true);
 
   fechar = output<void>();
 

@@ -3,8 +3,8 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../enviroments/enviroment';
-import { LeituraListagem } from '../models/leituras/leitura-listagem';
 import { LeiturasPaginadas } from '../models/leituras/leituras-paginadas.model';
+import { CriarLeituraDto } from '../models/leituras/criari-leitura.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -18,5 +18,9 @@ export class LeiturasService {
     return this.http.get<LeiturasPaginadas>(
       `${this.apiUrl}/paginado?pagina=${pagina}&limite=${limite}`,
     );
+  }
+
+  criar(dto: CriarLeituraDto): Observable<unknown> {
+    return this.http.post(this.apiUrl, dto);
   }
 }

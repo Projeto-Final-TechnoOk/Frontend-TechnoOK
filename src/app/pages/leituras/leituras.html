@@ -27,7 +27,12 @@
         (valorAlterado)="filtrarLeituras($event)"
       ></app-input-texto>
 
-      <app-botao texto="Nova Leitura" type="button" variante="primario"></app-botao>
+      <app-botao
+        texto="Nova Leitura"
+        type="button"
+        variante="primario"
+        (clicado)="alterarFormularioCriacao(true)"
+      ></app-botao>
     </div>
 
     <app-tabela
@@ -39,6 +44,56 @@
       [totalPaginas]="totalPaginas()"
       mensagemVazia="Nenhuma leitura encontrada."
       (paginaAlterada)="alterarPagina($event)"
+      (linhaClicada)="abrirResumo($event)"
+      (linkClicado)="abrirMedidor($event)"
     />
   </app-card>
 </div>
+
+@if (popupResumoAberto() && leituraSelecionada) {
+  <app-popup-detalhes
+    titulo="Detalhes da leitura"
+    [mostrarBotoes]="false"
+    (fechar)="fecharResumo()"
+  >
+    <div class="detalhe">
+      <span>Data e hora</span>
+      <p>{{ formatarDataHora(leituraSelecionada.dataHora) }}</p>
+    </div>
+
+    <div class="detalhe">
+      <span>Valor</span>
+      <p>{{ leituraSelecionada.valor }}</p>
+    </div>
+
+    <div class="detalhe">
+      <span>Medidor</span>
+      <p>{{ leituraSelecionada.medidorIdentificador }}</p>
+    </div>
+  </app-popup-detalhes>
+}
+
+@if (formularioCriacaoAberto()) {
+  <app-formulario
+    titulo="Nova Leitura"
+    [erro]="erroFormulario"
+    (fechar)="alterarFormularioCriacao(false)"
+    (salvar)="salvarLeitura()"
+  >
+    <app-select
+      label="Medidor"
+      placeholder="Selecione o medidor"
+      [opcoes]="opcoesMedidores"
+      [valor]="medidorFormulario"
+      (valorAlterado)="medidorFormulario = $event"
+    />
+
+    <app-input-texto
+      name="valor"
+      label="Valor"
+      placeholder="Deixe vazio para gerar automaticamente"
+      [valor]="valorFormulario"
+      (valorAlterado)="valorFormulario = $event"
+    />
+  </app-formulario>
+}

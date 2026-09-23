@@ -45,6 +45,7 @@
     />
   </app-card>
 </div>
+
 @if (formularioCriacaoAberto()) {
   <app-formulario
     titulo="Novo imóvel"
@@ -91,6 +92,7 @@
   <app-popup-delecao
     titulo="Excluir imóvel?"
     [mensagem]="'Tem certeza que deseja excluir o imóvel ' + imovelSelecionado.nome + '?'"
+    [erro]="erroDelecao()"
     (fechar)="fecharDelecao()"
     (confirmar)="confirmarDelecao()"
   />

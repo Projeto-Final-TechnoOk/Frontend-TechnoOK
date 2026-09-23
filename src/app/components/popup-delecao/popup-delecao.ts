@@ -10,10 +10,9 @@ import { BotaoComponent } from '../botao/botao';
 })
 export class PopupDelecaoComponent {
   titulo = input.required<string>();
-
   mensagem = input.required<string>();
+  erro = input<string>('');
 
   fechar = output<void>();
-
   confirmar = output<void>();
 }

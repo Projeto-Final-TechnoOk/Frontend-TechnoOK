@@ -10,10 +10,12 @@
       <ng-content></ng-content>
     </div>
 
-    <div class="acoes">
-      <app-botao texto="Excluir" variante="perigo" (clicado)="excluir.emit()" />
+    @if (mostrarBotoes()) {
+      <div class="acoes">
+        <app-botao texto="Excluir" variante="perigo" (clicado)="excluir.emit()" />
 
-      <app-botao texto="Editar" variante="edicao" (clicado)="editar.emit()" />
-    </div>
+        <app-botao texto="Editar" variante="edicao" (clicado)="editar.emit()" />
+      </div>
+    }
   </div>
 </div>

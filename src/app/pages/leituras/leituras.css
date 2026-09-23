@@ -85,3 +85,7 @@
 app-tabela {
   display: block;
 }
+
+.detalhe span {
+  font-weight: 700;
+}
