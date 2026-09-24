@@ -3,7 +3,6 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-
   background-color: var(--cor-background);
   padding: 1% 2%;
 }
@@ -13,24 +12,29 @@
   flex-direction: row;
 }
 
+.container-item-navegacao {
+  display: flex;
+}
+
 .item-navegacao {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   text-decoration: none;
   cursor: pointer;
 }
 
-.item-navegacao.ativo {
+/* Na rota exata da listagem não existe motivo para clicar novamente */
+.item-navegacao.rota-exata {
   cursor: default;
 }
 
-.item-navegacao:hover .opcao {
+/* Hover somente quando o item realmente pode ser usado para navegar */
+.item-navegacao:not(.rota-exata):hover .opcao {
   color: #111;
 }
 
-.item-navegacao:hover .linha {
+.item-navegacao:not(.rota-exata):hover .linha {
   background-color: #111;
 }
 
@@ -47,11 +51,12 @@
   background-color: var(--cor-cinza-apagado);
 }
 
-.item-navegacao.ativo .opcao {
+/* Ativo tanto na listagem quanto nas páginas específicas */
+.container-item-navegacao.ativo .opcao {
   color: #111;
 }
 
-.item-navegacao.ativo .linha {
+.container-item-navegacao.ativo .linha {
   height: 2px;
   background-color: var(--cor-primaria);
   transform: translateY(-1px);

@@ -1,7 +1,157 @@
-@if (imovel) {
-  <div class="cabecalho">
-    <h1>{{ imovel.nome }}</h1>
-    <p>{{ imovel.endereco }}</p>
+@if (imovel(); as imovel) {
+  <div class="conteudo">
+    <div class="topo-detalhes">
+      <app-card class="informacoes-especificas">
+        <div class="conteudo-informacoes">
+          <div class="cabecalho-informacoes">
+            <div class="identificacao-imovel">
+              <span class="titulo-secao"> Imóvel </span>
+
+              <h1>
+                {{ imovel.nome }}
+              </h1>
+
+              <p>
+                {{ imovel.endereco }}
+              </p>
+            </div>
+
+            <div class="metricas-medidores">
+              <div class="metrica-tipo metrica-gas">
+                <span> Gás </span>
+
+                <strong>
+                  {{ quantidadeMedidoresPorTipo(TipoMedidor.GAS) }}
+                </strong>
+              </div>
+
+              <div class="metrica-tipo metrica-energia">
+                <span> Eletricidade </span>
+
+                <strong>
+                  {{ quantidadeMedidoresPorTipo(TipoMedidor.ENERGIA) }}
+                </strong>
+              </div>
+
+              <div class="metrica-tipo metrica-agua">
+                <span> Água </span>
+
+                <strong>
+                  {{ quantidadeMedidoresPorTipo(TipoMedidor.AGUA) }}
+                </strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="ultima-leitura">
+            <span class="titulo-ultima-leitura"> Última leitura registrada: </span>
+
+            @if (imovel.ultimaLeitura; as ultimaLeitura) {
+              <span class="informacao-ultima-leitura">
+                {{ formatarUltimaLeitura(ultimaLeitura.dataHora) }}
+
+                ———
+
+                <strong>
+                  {{ ultimaLeitura.medidorIdentificador }}
+                </strong>
+
+                registrou
+
+                <strong>
+                  {{ formatarValor(ultimaLeitura.valor) }}
+                  {{ obterUnidadeMedidor(ultimaLeitura.medidorId) }}
+                </strong>
+              </span>
+            } @else {
+              <span class="informacao-ultima-leitura"> Nenhuma leitura registrada. </span>
+            }
+          </div>
+        </div>
+      </app-card>
+
+      <app-card class="entidades-filhas">
+        <div class="cabecalho-medidores">
+          <h2>Medidores</h2>
+
+          <span class="quantidade-medidores"> {{ imovel.medidores.length }} cadastrados </span>
+        </div>
+
+        <div class="lista-medidores">
+          @for (medidor of imovel.medidores; track medidor.id) {
+            <button type="button" class="medidor" (click)="abrirMedidor(medidor.id)">
+              <div class="informacoes-medidor">
+                <strong>
+                  {{ medidor.identificador }}
+                </strong>
+
+                <span>
+                  {{ medidor.tipo }}
+                </span>
+              </div>
+
+              <span class="seta-medidor"> → </span>
+            </button>
+          } @empty {
+            <p class="mensagem-vazia">Nenhum medidor cadastrado neste imóvel.</p>
+          }
+        </div>
+      </app-card>
+    </div>
+
+    <app-card class="metricas-especificas">
+      <div class="cabecalho-consumo">
+        <div class="cabecalho-secao">
+          <h2>Consumo do imóvel</h2>
+
+          <p>Acompanhe o consumo e as métricas dos medidores associados.</p>
+        </div>
+
+        <div class="filtros-consumo">
+          <app-multi-botoes
+            [opcoes]="opcoesTiposConsumo"
+            [valorSelecionado]="tipoConsumoSelecionado()"
+            (valorAlterado)="alterarTipoConsumo($event)"
+          />
+
+          <span class="separador-filtros"> | </span>
+
+          <app-multi-botoes
+            [opcoes]="opcoesPeriodosConsumo"
+            [valorSelecionado]="periodoConsumoSelecionado()"
+            (valorAlterado)="alterarPeriodoConsumo($event)"
+          />
+        </div>
+      </div>
+
+      <div class="graficos-consumo">
+        <div class="area-grafico">
+          <h3>Consumo ao longo do tempo</h3>
+
+          <app-grafico-linha
+            [categorias]="categoriasGraficoLinha()"
+            [valores]="valoresGraficoLinha()"
+            [cor]="corGrafico()"
+            nomeSerie="Consumo"
+            [unidade]="unidadeGrafico()"
+            [altura]="200"
+          />
+        </div>
+
+        <div class="area-grafico">
+          <h3>Consumo por medidor</h3>
+
+          <app-grafico-barras
+            [categorias]="categoriasGraficoBarras()"
+            [valores]="valoresGraficoBarras()"
+            [cor]="corGrafico()"
+            nomeSerie="Consumo"
+            [unidade]="unidadeGrafico()"
+            [altura]="200"
+          />
+        </div>
+      </div>
+    </app-card>
   </div>
 } @else {
   <p>Carregando imóvel...</p>

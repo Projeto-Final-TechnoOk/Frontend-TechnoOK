@@ -1,0 +1,14 @@
+<div class="multi-botoes">
+  @for (opcao of opcoes(); track opcao.value) {
+    <button
+      type="button"
+      class="botao"
+      [class.ativo]="valorSelecionado() === opcao.value"
+      [style.background-color]="valorSelecionado() === opcao.value ? opcao.corAtiva : null"
+      [style.color]="valorSelecionado() === opcao.value ? opcao.corTextoAtivo : null"
+      (click)="selecionar(opcao.value)"
+    >
+      {{ opcao.label }}
+    </button>
+  }
+</div>

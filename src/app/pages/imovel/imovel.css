@@ -1,0 +1,326 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.conteudo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  width: 100%;
+}
+
+/* Linha superior */
+
+.topo-detalhes {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(260px, 1fr);
+  gap: 16px;
+
+  width: 100%;
+}
+
+/* Informações */
+
+.informacoes-especificas {
+  display: block;
+
+  height: 180px;
+  min-width: 0;
+}
+
+.conteudo-informacoes {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.cabecalho-informacoes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+
+  width: 100%;
+}
+
+.identificacao-imovel {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.titulo-secao {
+  font-size: 14px;
+  font-weight: 600;
+
+  color: var(--cor-texto-secundario);
+}
+
+.cabecalho-informacoes h1 {
+  margin: 6px 0;
+
+  font-size: 28px;
+
+  color: var(--cor-texto-primario);
+}
+
+.cabecalho-informacoes p {
+  margin: 0;
+
+  font-size: 14px;
+
+  color: var(--cor-texto-secundario);
+}
+
+/* Contadores de medidores */
+
+.metricas-medidores {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  margin-left: auto;
+
+  flex-shrink: 0;
+}
+
+.metrica-tipo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-width: 80px;
+}
+
+.metrica-tipo span {
+  font-size: 13px;
+  font-weight: 500;
+
+  color: var(--cor-texto-secundario);
+}
+
+.metrica-tipo strong {
+  margin-top: 4px;
+
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.metrica-gas strong {
+  color: var(--cor-verde-gas);
+}
+
+.metrica-energia strong {
+  color: var(--cor-amarelo-energia);
+}
+
+.metrica-agua strong {
+  color: var(--cor-azul-agua);
+}
+
+/* Última leitura */
+
+.ultima-leitura {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding-top: 15px;
+  border-top: 1px solid var(--cor-cinza-apagado);
+  font-size: 14px;
+}
+
+.titulo-ultima-leitura {
+  font-weight: 600;
+
+  color: var(--cor-texto-primario);
+}
+
+.informacao-ultima-leitura {
+  color: var(--cor-texto-secundario);
+}
+
+.informacao-ultima-leitura strong {
+  color: var(--cor-texto-primario);
+}
+
+/* Medidores */
+
+/* Entidades filhas */
+
+.entidades-filhas {
+  display: block;
+
+  height: 180px;
+  min-width: 0;
+}
+
+.cabecalho-medidores {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  margin-bottom: 12px;
+}
+
+.cabecalho-medidores h2 {
+  margin: 0;
+
+  font-size: 18px;
+
+  color: var(--cor-texto-primario);
+}
+
+.quantidade-medidores {
+  font-size: 13px;
+
+  color: var(--cor-texto-secundario);
+
+  white-space: nowrap;
+}
+
+.lista-medidores {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  max-height: 110px;
+
+  overflow-y: auto;
+
+  padding-right: 4px;
+}
+
+.medidor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+
+  padding: 12px;
+
+  border: none;
+  border-radius: 8px;
+
+  background-color: var(--cor-secundaria);
+
+  color: var(--cor-texto-primario);
+
+  text-align: left;
+
+  cursor: pointer;
+
+  flex-shrink: 0;
+}
+
+.medidor:hover {
+  background-color: var(--cor-cinza-apagado);
+}
+
+.informacoes-medidor {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.informacoes-medidor strong {
+  font-size: 14px;
+}
+
+.informacoes-medidor span {
+  font-size: 13px;
+
+  color: var(--cor-texto-secundario);
+}
+
+.seta-medidor {
+  font-size: 18px;
+
+  color: var(--cor-texto-primario);
+}
+
+.mensagem-vazia {
+  margin: 0;
+
+  font-size: 14px;
+
+  color: var(--cor-texto-secundario);
+}
+
+/* Card de consumo */
+
+.metricas-especificas {
+  display: block;
+
+  width: 100%;
+  min-width: 0;
+
+  min-height: 320px;
+}
+
+.cabecalho-consumo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.cabecalho-secao h2 {
+  margin: 0;
+
+  font-size: 18px;
+
+  color: var(--cor-texto-primario);
+}
+
+.cabecalho-secao p {
+  margin: 6px 0 0;
+
+  font-size: 13px;
+
+  color: var(--cor-texto-secundario);
+}
+
+/* Filtros */
+
+.filtros-consumo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  flex-shrink: 0;
+}
+
+.separador-filtros {
+  font-size: 20px;
+
+  color: var(--cor-cinza-apagado);
+}
+
+/* Gráficos */
+
+.graficos-consumo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+
+  margin-top: 20px;
+
+  width: 100%;
+}
+
+.area-grafico {
+  min-width: 0;
+}
+
+.area-grafico h3 {
+  margin: 0 0 12px;
+
+  font-size: 15px;
+
+  color: var(--cor-texto-primario);
+}

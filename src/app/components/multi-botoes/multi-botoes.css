@@ -1,0 +1,39 @@
+:host {
+  display: block;
+}
+
+.multi-botoes {
+  display: flex;
+
+  border: 1px solid var(--cor-cinza-apagado);
+  border-radius: 8px;
+
+  overflow: hidden;
+}
+
+.botao {
+  padding: 10px 12px;
+
+  border: none;
+  border-right: 1px solid var(--cor-cinza-apagado);
+
+  background-color: var(--cor-branco);
+
+  color: var(--cor-texto-secundario);
+
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+.botao:last-child {
+  border-right: none;
+}
+
+.botao:hover:not(.ativo) {
+  background-color: var(--cor-background);
+}
+
+.botao.ativo {
+  font-weight: 500;
+}

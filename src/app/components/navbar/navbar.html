@@ -1,23 +1,56 @@
 <div class="navbar">
   <img class="logo" src="/logoFink.png" alt="Logo Fink" />
+
   <nav class="opcoes-navegacao">
-    <a class="item-navegacao" routerLink="/dashboard" routerLinkActive="ativo">
-      <span class="opcao">Dashboard</span>
-      <div class="linha"></div>
-    </a>
-    <a class="item-navegacao" routerLink="/imoveis" routerLinkActive="ativo">
-      <span class="opcao">Imóveis</span>
-      <div class="linha"></div>
-    </a>
-    <a class="item-navegacao" routerLink="/medidores" routerLinkActive="ativo">
-      <span class="opcao">Medidores</span>
-      <div class="linha"></div>
-    </a>
-    <a class="item-navegacao" routerLink="/leituras" routerLinkActive="ativo">
-      <span class="opcao">Leituras</span>
-      <div class="linha"></div>
-    </a>
+    <div class="container-item-navegacao" routerLinkActive="ativo">
+      <a
+        class="item-navegacao"
+        routerLink="/dashboard"
+        routerLinkActive="rota-exata"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="opcao">Dashboard</span>
+        <div class="linha"></div>
+      </a>
+    </div>
+
+    <div class="container-item-navegacao" routerLinkActive="ativo">
+      <a
+        class="item-navegacao"
+        routerLink="/imoveis"
+        routerLinkActive="rota-exata"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="opcao">Imóveis</span>
+        <div class="linha"></div>
+      </a>
+    </div>
+
+    <div class="container-item-navegacao" routerLinkActive="ativo">
+      <a
+        class="item-navegacao"
+        routerLink="/medidores"
+        routerLinkActive="rota-exata"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="opcao">Medidores</span>
+        <div class="linha"></div>
+      </a>
+    </div>
+
+    <div class="container-item-navegacao" routerLinkActive="ativo">
+      <a
+        class="item-navegacao"
+        routerLink="/leituras"
+        routerLinkActive="rota-exata"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="opcao">Leituras</span>
+        <div class="linha"></div>
+      </a>
+    </div>
   </nav>
+
   <nav class="perfil" routerLink="/login">
     <img class="icone-usuario" src="/user-icon.png" alt="Ícone de Usuário" />
   </nav>
