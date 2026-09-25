@@ -1,16 +1,19 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { TabelaComponent, LinhaTabela, LinkTabela } from '../../components/tabela/tabela';
 import { InputTextoComponent } from '../../components/input-texto/input-texto';
 import { BotaoComponent } from '../../components/botao/botao';
 import { CardComponent } from '../../components/card/card';
-import { Router } from '@angular/router';
-import { LeiturasService } from '../../services/leituras';
-import { LeituraListagem } from '../../models/leituras/leitura-listagem';
 import { PopupDetalhesComponent } from '../../components/popup-detalhes/popup-detalhes';
-import { MedidoresService } from '../../services/medidores';
 import { OpcaoSelect, SelectComponent } from '../../components/select/select';
-import { CriarLeituraDto } from '../../models/leituras/criari-leitura.dto';
 import { FormularioComponent } from '../../components/formulario/formulario';
+
+import { LeiturasService } from '../../services/leituras';
+import { MedidoresService } from '../../services/medidores';
+
+import { LeituraListagem } from '../../models/leituras/leitura-listagem';
+import { CriarLeituraDto } from '../../models/leituras/criari-leitura.dto';
 
 @Component({
   selector: 'app-leituras',
@@ -31,26 +34,32 @@ export class LeiturasPage implements OnInit {
   private readonly medidoresService = inject(MedidoresService);
   private readonly router = inject(Router);
 
-  leituras = signal<LeituraListagem[]>([]);
-  quantidadeLeituras = signal<number>(0);
+  ngOnInit(): void {
+    this.carregarLeituras();
+  }
 
-  // Formulário de criação
+  // ======================
+  // Formulário de Criação
+  // ======================
 
+  // Variável que controla a abertura do formulário de criação
   formularioCriacaoAberto = signal(false);
 
+  // Variáveis que guardam os valores preenchidos no formulário
   medidorFormulario = '';
-
   valorFormulario = '';
-
   erroFormulario = '';
 
+  // Guarda as opções de medidores utilizadas no Select do formulário
   opcoesMedidores: OpcaoSelect[] = [];
 
+  // Busca os medidores cadastrados e os transforma em opções para o Select do formulário
   carregarOpcoesMedidores(): void {
     this.medidoresService.listar().subscribe({
       next: (medidores) => {
         this.opcoesMedidores = medidores.map((medidor) => ({
           label: medidor.identificador,
+
           value: medidor.id,
         }));
       },
@@ -61,6 +70,7 @@ export class LeiturasPage implements OnInit {
     });
   }
 
+  // Abre ou fecha o formulário de criação e carrega as opções de medidores quando necessário
   alterarFormularioCriacao(aberto: boolean): void {
     this.erroFormulario = '';
 
@@ -73,6 +83,8 @@ export class LeiturasPage implements OnInit {
     this.valorFormulario = '';
   }
 
+  // Valida os campos preenchidos e cria uma nova leitura
+  // O valor é opcional e, quando não informado, fica sob responsabilidade do backend
   salvarLeitura(): void {
     if (!this.medidorFormulario) {
       this.erroFormulario = 'Selecione um medidor.';
@@ -83,14 +95,13 @@ export class LeiturasPage implements OnInit {
       medidorId: this.medidorFormulario,
     };
 
+    // Caso um valor seja informado, converte vírgula para ponto e verifica se o valor recebido é numérico
     if (this.valorFormulario.trim()) {
       const valor = Number(this.valorFormulario.replace(',', '.'));
-
       if (Number.isNaN(valor)) {
         this.erroFormulario = 'Informe um valor válido.';
         return;
       }
-
       novaLeitura.valor = valor;
     }
 
@@ -98,6 +109,7 @@ export class LeiturasPage implements OnInit {
 
     this.leiturasService.criar(novaLeitura).subscribe({
       next: () => {
+        // Após criar uma leitura, retorna para a primeira página para que a leitura mais recente possa ser exibida
         this.paginaAtual.set(1);
         this.carregarLeituras();
       },
@@ -108,20 +120,28 @@ export class LeiturasPage implements OnInit {
     });
   }
 
-  // Tabela
+  // =================
+  // Tabela e Filtro
+  // =================
 
+  // Variável que guarda as leituras carregadas na página atual
+  leituras = signal<LeituraListagem[]>([]);
+
+  // Variável que guarda a quantidade total de leituras cadastradas
+  quantidadeLeituras = signal<number>(0);
+
+  // Define os cabeçalhos apresentados na tabela
+  cabecalhosTabela = ['Data e hora', 'Valor', 'Medidor'];
+
+  // Guarda os dados já preparados para o componente de tabela
+  dadosTabela = signal<LinhaTabela[]>([]);
+
+  // Variáveis utilizadas no controle da paginação
   paginaAtual = signal<number>(1);
   limite = signal<number>(100);
   totalPaginas = signal<number>(0);
 
-  cabecalhosTabela = ['Data e hora', 'Valor', 'Medidor'];
-
-  dadosTabela = signal<LinhaTabela[]>([]);
-
-  ngOnInit(): void {
-    this.carregarLeituras();
-  }
-
+  // Busca as leituras de forma paginada e atualiza tanto os dados da tabela quanto os dados da paginação
   carregarLeituras(): void {
     this.leiturasService.listarPaginado(this.paginaAtual(), this.limite()).subscribe({
       next: (leituras) => {
@@ -138,6 +158,7 @@ export class LeiturasPage implements OnInit {
     });
   }
 
+  // Transforma a lista de leituras no formato esperado pelo componente genérico de tabela
   atualizarTabela(leituras: LeituraListagem[]): void {
     const dados = leituras.map((leitura) => ({
       id: leitura.id,
@@ -155,41 +176,46 @@ export class LeiturasPage implements OnInit {
     this.dadosTabela.set(dados);
   }
 
+  // Formata o DateTime da leitura para o padrão brasileiro
   formatarDataHora(dataHora: Date): string {
     return new Date(dataHora).toLocaleString('pt-BR');
   }
 
+  // Filtra as leituras carregadas na página atual pelo identificador do medidor ou pela data e hora
   filtrarLeituras(valor: string): void {
     const termo = valor.toLowerCase();
-
     const filtradas = this.leituras().filter((leitura) => {
       const dataHora = this.formatarDataHora(leitura.dataHora).toLowerCase();
-
       return leitura.medidorIdentificador.toLowerCase().includes(termo) || dataHora.includes(termo);
     });
 
     this.atualizarTabela(filtradas);
   }
 
+  // Altera a página atual e busca os novos dados da tabela
   alterarPagina(pagina: number): void {
     this.paginaAtual.set(pagina);
-
     this.carregarLeituras();
   }
 
+  // Redireciona o usuário para a página específica do medidor relacionado à leitura
   abrirMedidor(id: string): void {
     this.router.navigate(['/medidores', id]);
   }
 
-  // Popup de detalhes
+  // =================
+  // Popup de Detalhes
+  // =================
 
+  // Variável que controla a abertura do popup de detalhes
   popupResumoAberto = signal(false);
 
+  // Guarda a leitura atualmente selecionada na tabela
   leituraSelecionada: LeituraListagem | null = null;
 
+  // Localiza a leitura selecionada e abre seu popup de detalhes
   abrirResumo(id: string): void {
     const leitura = this.leituras().find((leitura) => leitura.id === id);
-
     if (!leitura) {
       return;
     }
@@ -198,6 +224,7 @@ export class LeiturasPage implements OnInit {
     this.popupResumoAberto.set(true);
   }
 
+  // Fecha o popup e limpa a leitura selecionada
   fecharResumo(): void {
     this.popupResumoAberto.set(false);
     this.leituraSelecionada = null;

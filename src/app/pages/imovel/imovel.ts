@@ -37,7 +37,6 @@ export class ImovelPage implements OnInit {
   imovel = signal<ImovelDetalhes | null>(null);
   carregarImovel(): void {
     const id = this.route.snapshot.paramMap.get('id');
-
     if (!id) {
       return;
     }
@@ -55,23 +54,19 @@ export class ImovelPage implements OnInit {
   // Filtra os medidores do imóvel por tipo e retorna a quantidade de cada um
   quantidadeMedidoresPorTipo(tipo: TipoMedidor): number {
     const imovel = this.imovel();
-
     if (!imovel) {
       return 0;
     }
-
     return imovel.medidores.filter((medidor) => medidor.tipo === tipo).length;
   }
 
   // Formata o DateTime buscado para ser mostrado na tela -> Formato: "dd/mmm/yyyy - hh:mm"
   formatarUltimaLeitura(dataHora: Date): string {
     const data = new Date(dataHora);
-
     const hora = data.toLocaleTimeString('pt-BR', {
       hour: '2-digit',
       minute: '2-digit',
     });
-
     const dia = data.toLocaleDateString('pt-BR');
 
     return `${dia} - ${hora}`;
@@ -80,29 +75,21 @@ export class ImovelPage implements OnInit {
   // Verifica o tipo do medidor da última leitura e atribui a unidade corretamente.
   obterUnidadeMedidor(medidorId: string): string {
     const imovel = this.imovel();
-
     if (!imovel) {
       return '';
     }
 
     const medidor = imovel.medidores.find((medidor) => medidor.id === medidorId);
-
     if (!medidor) {
       return '';
     }
 
-    switch (medidor.tipo) {
-      case TipoMedidor.ENERGIA:
-        return 'kWh';
-
-      case TipoMedidor.AGUA:
-        return 'm³';
-
-      case TipoMedidor.GAS:
-        return 'm³';
-
-      default:
-        return '';
+    if (medidor.tipo === TipoMedidor.AGUA || medidor.tipo === TipoMedidor.GAS) {
+      return 'm³';
+    } else if (medidor.tipo === TipoMedidor.ENERGIA) {
+      return 'kWh';
+    } else {
+      return '';
     }
   }
 
@@ -150,7 +137,6 @@ export class ImovelPage implements OnInit {
   tipoConsumoSelecionado = signal<TipoMedidor>(TipoMedidor.AGUA);
   alterarTipoConsumo(tipo: string): void {
     this.tipoConsumoSelecionado.set(tipo as TipoMedidor);
-
     this.carregarConsumo();
   }
 
@@ -180,7 +166,6 @@ export class ImovelPage implements OnInit {
   periodoConsumoSelecionado = signal<'24h' | '7d' | '30d'>('7d');
   alterarPeriodoConsumo(periodo: string): void {
     this.periodoConsumoSelecionado.set(periodo as PeriodoConsumo);
-
     this.carregarConsumo();
   }
 
@@ -188,7 +173,6 @@ export class ImovelPage implements OnInit {
   consumo = signal<ConsumoImovel | null>(null);
   carregarConsumo(): void {
     const id = this.route.snapshot.paramMap.get('id');
-
     if (!id) {
       return;
     }
@@ -214,13 +198,11 @@ export class ImovelPage implements OnInit {
   // Soma os consumos dos diferentes medidores por unidade do período (hora ou dia)
   dadosGraficoLinha = computed(() => {
     const consumo = this.consumo();
-
     if (!consumo) {
       return [];
     }
 
     let acumulado = 0;
-
     const pontos = consumo.intervalos.map((intervalo, indice) => {
       const consumoIntervalo = consumo.medidores.reduce(
         (total, medidor) => total + (medidor.consumos[indice] ?? 0),
@@ -248,7 +230,6 @@ export class ImovelPage implements OnInit {
   // Soma os diferentes consumos do período selecionado por medidores (soma todo o consumo do medidor)
   dadosGraficoBarras = computed(() => {
     const consumo = this.consumo();
-
     if (!consumo) {
       return [];
     }
@@ -256,7 +237,6 @@ export class ImovelPage implements OnInit {
     return consumo.medidores
       .map((medidor) => {
         const total = medidor.consumos.reduce((soma, valor) => soma + valor, 0);
-
         return {
           identificador: medidor.identificador,
           consumo: Number(total.toFixed(3)),
@@ -268,7 +248,6 @@ export class ImovelPage implements OnInit {
   // Separa os rótulos e os valores preparados para o gráfico de linha.
   // As categorias representam os períodos (horas ou dias) e os valores representam o consumo acumulado.
   categoriasGraficoLinha = computed(() => this.dadosGraficoLinha().map((item) => item.rotulo));
-
   valoresGraficoLinha = computed(() => this.dadosGraficoLinha().map((item) => item.consumo));
 
   // Separa os identificadores e os valores preparados para o gráfico de barras.
@@ -276,7 +255,6 @@ export class ImovelPage implements OnInit {
   categoriasGraficoBarras = computed(() =>
     this.dadosGraficoBarras().map((item) => item.identificador),
   );
-
   valoresGraficoBarras = computed(() => this.dadosGraficoBarras().map((item) => item.consumo));
 
   // Variavel que guarda a cor que deve ser mostrada com o gráfico (compara e muda de acordo com o tipo do medidor)
@@ -284,10 +262,8 @@ export class ImovelPage implements OnInit {
     switch (this.tipoConsumoSelecionado()) {
       case TipoMedidor.ENERGIA:
         return '#e7a900';
-
       case TipoMedidor.AGUA:
         return '#156de7';
-
       case TipoMedidor.GAS:
         return '#7ca923';
 

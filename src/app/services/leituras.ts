@@ -11,8 +11,11 @@ import { CriarLeituraDto } from '../models/leituras/criari-leitura.dto';
 })
 export class LeiturasService {
   private readonly http = inject(HttpClient);
-
   private readonly apiUrl = `${environment.apiUrl}/leituras`;
+
+  // ==================
+  // Tabela de leituras
+  // ==================
 
   listarPaginado(pagina: number, limite: number): Observable<LeiturasPaginadas> {
     return this.http.get<LeiturasPaginadas>(
