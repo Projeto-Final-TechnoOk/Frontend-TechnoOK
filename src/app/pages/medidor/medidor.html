@@ -1,1 +1,224 @@
-<p>medidor works!</p>
+@if (medidor(); as medidor) {
+  <div class="conteudo">
+    <div class="topo-detalhes">
+      <app-card class="informacoes-especificas">
+        <div class="conteudo-informacoes">
+          <div class="cabecalho-informacoes">
+            <div class="identificacao-medidor">
+              <span class="titulo-secao"> Medidor </span>
+
+              <h1>
+                {{ medidor.identificador }}
+              </h1>
+
+              <p>
+                {{ medidor.tipo }}
+              </p>
+            </div>
+
+            <div class="imovel-vinculado">
+              <span class="titulo-imovel-vinculado"> Imóvel vinculado </span>
+
+              <button type="button" class="botao-imovel" (click)="abrirImovel(medidor.imovel.id)">
+                <strong>
+                  {{ medidor.imovel.nome }}
+                </strong>
+
+                <span> → </span>
+              </button>
+
+              <p>
+                {{ medidor.imovel.endereco }}
+              </p>
+            </div>
+          </div>
+
+          <div class="ultima-leitura">
+            <span class="titulo-ultima-leitura"> Última leitura registrada: </span>
+
+            @if (medidor.ultimaLeitura; as ultimaLeitura) {
+              <span class="informacao-ultima-leitura">
+                {{ formatarDataHora(ultimaLeitura.dataHora) }}
+
+                ———
+
+                <strong>
+                  {{ formatarValor(ultimaLeitura.valor) }}
+                  {{ obterUnidade(medidor.tipo) }}
+                </strong>
+              </span>
+            } @else {
+              <span class="informacao-ultima-leitura"> Nenhuma leitura registrada. </span>
+            }
+          </div>
+        </div>
+      </app-card>
+
+      <app-card class="ultimas-leituras">
+        <div class="cabecalho-leituras">
+          <h2>Últimas leituras</h2>
+
+          <span class="quantidade-leituras"> {{ medidor.ultimasLeituras.length }} recentes </span>
+        </div>
+
+        <div class="lista-leituras">
+          @for (leitura of medidor.ultimasLeituras; track leitura.id) {
+            <div class="leitura-recente">
+              <span class="data-leitura">
+                {{ formatarDataHora(leitura.dataHora) }}
+              </span>
+
+              <strong>
+                {{ formatarValor(leitura.valor) }}
+                {{ obterUnidade(medidor.tipo) }}
+              </strong>
+            </div>
+          } @empty {
+            <p class="mensagem-vazia">Nenhuma leitura registrada neste medidor.</p>
+          }
+        </div>
+      </app-card>
+    </div>
+
+    <app-card class="metricas-especificas">
+      <div class="cabecalho-consumo">
+        <div class="cabecalho-secao">
+          <h2>Consumo do medidor</h2>
+
+          <p>Acompanhe o consumo e as métricas deste medidor.</p>
+        </div>
+
+        <div class="filtros-consumo">
+          <app-multi-botoes
+            [opcoes]="opcoesPeriodosConsumo"
+            [valorSelecionado]="periodoConsumoSelecionado()"
+            (valorAlterado)="alterarPeriodoConsumo($event)"
+          />
+        </div>
+      </div>
+
+      <!-- MÉTRICAS -->
+
+      <div class="metricas-consumo">
+        <div class="metrica-consumo">
+          <span> Consumo total </span>
+
+          <strong>
+            {{ formatarValor(consumoTotal()) }}
+            {{ unidadeConsumo() }}
+          </strong>
+        </div>
+
+        <div class="metrica-consumo">
+          <span>
+            {{ tituloMediaConsumo() }}
+          </span>
+
+          <strong>
+            {{ formatarValor(mediaConsumo()) }}
+            {{ unidadeConsumo() }}
+          </strong>
+        </div>
+
+        <div class="metrica-consumo">
+          <span> Maior consumo </span>
+
+          @if (picoConsumo(); as pico) {
+            <strong>
+              {{ formatarValor(pico.valor) }}
+              {{ unidadeConsumo() }}
+            </strong>
+
+            <small>
+              {{ pico.rotulo }}
+            </small>
+          } @else {
+            <strong> 0.000 {{ unidadeConsumo() }} </strong>
+          }
+        </div>
+      </div>
+
+      <!-- GRÁFICOS -->
+      <!-- IMPORTANTE: está FORA de .metricas-consumo -->
+
+      <div class="visualizacoes-consumo">
+        <div class="area-grafico">
+          <h3>Consumo acumulado no período</h3>
+
+          <app-grafico-linha
+            [categorias]="categoriasGraficoLinha()"
+            [valores]="valoresGraficoLinha()"
+            [cor]="corGrafico()"
+            nomeSerie="Consumo"
+            [unidade]="unidadeConsumo()"
+            [altura]="155"
+          />
+        </div>
+
+        <div class="area-comparacao">
+          <h3>Comparação com a média</h3>
+
+          @if (comparacaoConsumo(); as comparacao) {
+            <div class="comparacao-media">
+              <div class="rotulos-faixas">
+                <span>Abaixo</span>
+                <span>Na média</span>
+                <span>Acima</span>
+              </div>
+
+              <div class="indicador-comparacao" [style.--cor-indicador]="corGrafico()">
+                <div class="faixa faixa-abaixo"></div>
+
+                <div class="faixa faixa-media"></div>
+
+                <div class="faixa faixa-acima"></div>
+
+                <div class="marcador-consumo" [style.left.%]="posicaoIndicador()">
+                  <span class="ponto-marcador"></span>
+
+                  <strong>
+                    {{ formatarValor(consumoTotal()) }}
+                    {{ unidadeConsumo() }}
+                  </strong>
+                </div>
+              </div>
+
+              <div class="informacoes-comparacao">
+                <span>
+                  Média dos outros:
+                  <strong>
+                    {{ formatarValor(comparacao.media) }}
+                    {{ unidadeConsumo() }}
+                  </strong>
+                </span>
+
+                <span>
+                  {{ textoDiferencaMedia() }}
+                </span>
+
+                <strong
+                  class="situacao-consumo"
+                  [class.situacao-abaixo]="comparacao.situacao === 'abaixo'"
+                  [class.situacao-media]="comparacao.situacao === 'media'"
+                  [class.situacao-acima]="comparacao.situacao === 'acima'"
+                >
+                  {{ comparacao.descricao }}
+                </strong>
+              </div>
+            </div>
+          } @else {
+            <div class="comparacao-indisponivel">
+              <strong> Comparação indisponível </strong>
+
+              <span>
+                Não há outros medidores do mesmo tipo com consumo disponível neste imóvel.
+              </span>
+            </div>
+          }
+        </div>
+      </div>
+    </app-card>
+  </div>
+} @else {
+  <p>Carregando medidor...</p>
+}
