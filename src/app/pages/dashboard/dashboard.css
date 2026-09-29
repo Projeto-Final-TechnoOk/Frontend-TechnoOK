@@ -1,5 +1,13 @@
 .topo {
   margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.textos-topo {
+  display: flex;
+  flex-direction: column;
 }
 
 .texto-boas-vindas {

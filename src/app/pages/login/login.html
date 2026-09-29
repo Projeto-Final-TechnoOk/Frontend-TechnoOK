@@ -1,37 +1,54 @@
 <div class="pagina">
   <div class="topo"></div>
+
   <img class="logo" src="/logoFink.png" alt="Logo Fink" />
+
   <div class="conteudo">
     <div class="login">
       <div class="textos-login">
         <h2>Bom ter você de volta!</h2>
+
         <p class="subtitulo">Acesse sua conta para entrar no sistema administrativo.</p>
       </div>
+
       <div>
         <app-input-texto
           placeholder="Insira seu e-mail"
           type="email"
           name="email"
           [required]="true"
+          [valor]="email()"
+          (valorAlterado)="email.set($event)"
         ></app-input-texto>
+
         <app-input-texto
           placeholder="Insira sua senha"
           type="password"
           name="senha"
           [required]="true"
+          [valor]="senha()"
+          (valorAlterado)="senha.set($event)"
         ></app-input-texto>
       </div>
+
+      @if (erro()) {
+        <p class="erro-login">
+          {{ erro() }}
+        </p>
+      }
+
       <div>
         <app-botao
           texto="Entrar"
           type="submit"
           variante="primario"
-          [desabilitado]="false"
+          [desabilitado]="carregando()"
           [larguraTotal]="true"
           (clicado)="entrar()"
         ></app-botao>
       </div>
     </div>
+
     <img src="/imagemLogin.png" alt="Logo Fink" />
   </div>
 </div>

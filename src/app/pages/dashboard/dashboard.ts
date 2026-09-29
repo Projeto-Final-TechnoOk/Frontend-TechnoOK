@@ -1,24 +1,42 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 
+import { HttpErrorResponse } from '@angular/common/http';
+
 import { CardComponent } from '../../components/card/card';
 import { GraficoBarrasComponent } from '../../components/grafico-barras/grafico-barras';
 import { SelectComponent, OpcaoSelect } from '../../components/select/select';
 import { SetaComponent } from '../../components/seta/seta';
+import { BotaoComponent } from '../../components/botao/botao';
+import { InputTextoComponent } from '../../components/input-texto/input-texto';
+import { FormularioComponent } from '../../components/formulario/formulario';
 
 import { DashboardService } from '../../services/dashboard';
 import { MedidoresService } from '../../services/medidores';
+import { AuthService } from '../../services/auth';
+import { UsuariosService } from '../../services/usuarios';
 
 import { DashboardResumo } from '../../models/dashboard/dashboard-resumo..model';
-
+import { CriarUsuarioDto } from '../../models/usuarios/criar-usuario.dto';
+import { CargoUsuario } from '../../enums/usuarios/cargo-usuario';
 @Component({
   selector: 'app-dashboard',
-  imports: [CardComponent, GraficoBarrasComponent, SelectComponent, SetaComponent],
+  imports: [
+    CardComponent,
+    GraficoBarrasComponent,
+    SelectComponent,
+    SetaComponent,
+    BotaoComponent,
+    InputTextoComponent,
+    FormularioComponent,
+  ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
 export class DashboardPage implements OnInit {
   private readonly dashboardService = inject(DashboardService);
   private readonly medidoresService = inject(MedidoresService);
+  private readonly authService = inject(AuthService);
+  private readonly usuariosService = inject(UsuariosService);
 
   ngOnInit(): void {
     this.carregarResumo();
@@ -41,6 +59,113 @@ export class DashboardPage implements OnInit {
 
       error: (erro) => {
         console.error('Erro ao carregar resumo do dashboard:', erro);
+      },
+    });
+  }
+
+  // ======================
+  // Administração - Usuário
+  // ======================
+
+  // Verifica se o usuário autenticado
+  // possui cargo de administrador.
+  ehAdmin(): boolean {
+    return this.authService.ehAdmin();
+  }
+
+  // Variável que controla a abertura
+  // do formulário de criação de usuário.
+  formularioUsuarioAberto = signal(false);
+
+  // Valores preenchidos no formulário.
+  nomeUsuarioFormulario = '';
+  emailUsuarioFormulario = '';
+  senhaUsuarioFormulario = '';
+  cargoUsuarioFormulario: CargoUsuario | '' = '';
+
+  // Guarda possíveis erros retornados
+  // durante a criação do usuário.
+  erroUsuarioFormulario = '';
+
+  // Opções disponíveis para o cargo do usuário.
+  opcoesCargoUsuario: OpcaoSelect[] = [
+    {
+      label: 'Usuário',
+      value: CargoUsuario.USUARIO,
+    },
+    {
+      label: 'Administrador',
+      value: CargoUsuario.ADMIN,
+    },
+  ];
+
+  // Abre o formulário e limpa dados
+  // de uma abertura anterior.
+  abrirCriacaoUsuario(): void {
+    this.nomeUsuarioFormulario = '';
+    this.emailUsuarioFormulario = '';
+    this.senhaUsuarioFormulario = '';
+    this.cargoUsuarioFormulario = '';
+    this.erroUsuarioFormulario = '';
+
+    this.formularioUsuarioAberto.set(true);
+  }
+
+  // Fecha o formulário e limpa
+  // possíveis mensagens de erro.
+  fecharCriacaoUsuario(): void {
+    this.erroUsuarioFormulario = '';
+
+    this.formularioUsuarioAberto.set(false);
+  }
+
+  // Atualiza o cargo selecionado no formulário.
+  selecionarCargoUsuario(cargo: string): void {
+    this.cargoUsuarioFormulario = cargo as CargoUsuario;
+  }
+
+  // Valida os campos e cria
+  // um novo usuário no sistema.
+  salvarUsuario(): void {
+    const nome = this.nomeUsuarioFormulario.trim();
+
+    const email = this.emailUsuarioFormulario.trim();
+
+    const senha = this.senhaUsuarioFormulario;
+
+    const cargo = this.cargoUsuarioFormulario;
+
+    if (!nome || !email || !senha || !cargo) {
+      this.erroUsuarioFormulario = 'Preencha todos os campos.';
+
+      return;
+    }
+
+    this.erroUsuarioFormulario = '';
+
+    const novoUsuario: CriarUsuarioDto = {
+      nome,
+      email,
+      senha,
+      cargo,
+    };
+
+    this.usuariosService.criar(novoUsuario).subscribe({
+      next: () => {
+        this.fecharCriacaoUsuario();
+
+        this.nomeUsuarioFormulario = '';
+        this.emailUsuarioFormulario = '';
+        this.senhaUsuarioFormulario = '';
+        this.cargoUsuarioFormulario = '';
+      },
+
+      error: (erro: HttpErrorResponse) => {
+        const mensagem = erro.error?.message;
+
+        this.erroUsuarioFormulario = Array.isArray(mensagem)
+          ? mensagem.join(' ')
+          : (mensagem ?? 'Não foi possível criar o usuário.');
       },
     });
   }

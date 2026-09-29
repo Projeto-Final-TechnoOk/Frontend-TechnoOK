@@ -9,6 +9,7 @@ import { MedidoresPage } from './pages/medidores/medidores';
 import { LeiturasPage } from './pages/leituras/leituras';
 import { ImovelPage } from './pages/imovel/imovel';
 import { MedidorPage } from './pages/medidor/medidor';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -24,6 +25,7 @@ export const routes: Routes = [
   {
     path: '',
     component: AppLayout,
+    canActivate: [authGuard],
     children: [
       {
         path: 'dashboard',

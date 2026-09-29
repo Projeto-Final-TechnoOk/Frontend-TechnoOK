@@ -1,7 +1,18 @@
 <div class="corpo">
   <div class="topo">
-    <h1 class="texto-boas-vindas">Dashboard</h1>
-    <p class="subtitulo-boas-vindas">Acompanhe os principais dados de telemetria do sistema.</p>
+    <div class="textos-topo">
+      <h1 class="texto-boas-vindas">Dashboard</h1>
+
+      <p class="subtitulo-boas-vindas">Acompanhe os principais dados de telemetria do sistema.</p>
+    </div>
+
+    @if (ehAdmin()) {
+      <app-botao
+        texto="Adicionar usuário"
+        variante="primario"
+        (clicado)="abrirCriacaoUsuario()"
+      ></app-botao>
+    }
   </div>
   <div class="contadores">
     <app-card
@@ -79,3 +90,46 @@
     </app-card>
   </div>
 </div>
+
+@if (formularioUsuarioAberto()) {
+  <app-formulario
+    titulo="Novo usuário"
+    [erro]="erroUsuarioFormulario"
+    (fechar)="fecharCriacaoUsuario()"
+    (salvar)="salvarUsuario()"
+  >
+    <app-input-texto
+      name="nomeUsuario"
+      label="Nome"
+      placeholder="Digite o nome"
+      [valor]="nomeUsuarioFormulario"
+      (valorAlterado)="nomeUsuarioFormulario = $event"
+    />
+
+    <app-input-texto
+      name="emailUsuario"
+      label="E-mail"
+      type="email"
+      placeholder="Digite o e-mail"
+      [valor]="emailUsuarioFormulario"
+      (valorAlterado)="emailUsuarioFormulario = $event"
+    />
+
+    <app-input-texto
+      name="senhaUsuario"
+      label="Senha"
+      type="password"
+      placeholder="Digite a senha"
+      [valor]="senhaUsuarioFormulario"
+      (valorAlterado)="senhaUsuarioFormulario = $event"
+    />
+
+    <app-select
+      label="Cargo"
+      placeholder="Selecione o cargo"
+      [opcoes]="opcoesCargoUsuario"
+      [valor]="cargoUsuarioFormulario"
+      (valorAlterado)="selecionarCargoUsuario($event)"
+    />
+  </app-formulario>
+}
