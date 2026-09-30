@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../enviroments/enviroment';
 import { LeiturasPaginadas } from '../models/leituras/leituras-paginadas.model';
-import { CriarLeituraDto } from '../models/leituras/criari-leitura.dto';
+import { CriarLeituraDto } from '../models/leituras/criar-leitura.dto';
 
 @Injectable({
   providedIn: 'root',

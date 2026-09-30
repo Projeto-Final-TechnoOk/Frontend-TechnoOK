@@ -1,3 +1,4 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 
 import { AuthLayout } from './layouts/auth-layout/auth-layout';
@@ -9,9 +10,20 @@ import { MedidoresPage } from './pages/medidores/medidores';
 import { LeiturasPage } from './pages/leituras/leituras';
 import { ImovelPage } from './pages/imovel/imovel';
 import { MedidorPage } from './pages/medidor/medidor';
+
 import { authGuard } from './guards/auth.guard';
+import { AuthService } from './services/auth';
 
 export const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: () => {
+      const authService = inject(AuthService);
+
+      return authService.obterToken() ? 'dashboard' : 'login';
+    },
+  },
   {
     path: '',
     component: AuthLayout,

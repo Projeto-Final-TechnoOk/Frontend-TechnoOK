@@ -1,5 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { TabelaComponent, LinhaTabela, LinkTabela } from '../../components/tabela/tabela';
 import { InputTextoComponent } from '../../components/input-texto/input-texto';
@@ -13,7 +14,7 @@ import { LeiturasService } from '../../services/leituras';
 import { MedidoresService } from '../../services/medidores';
 
 import { LeituraListagem } from '../../models/leituras/leitura-listagem';
-import { CriarLeituraDto } from '../../models/leituras/criari-leitura.dto';
+import { CriarLeituraDto } from '../../models/leituras/criar-leitura.dto';
 
 @Component({
   selector: 'app-leituras',
@@ -48,7 +49,7 @@ export class LeiturasPage implements OnInit {
   // Variáveis que guardam os valores preenchidos no formulário
   medidorFormulario = '';
   valorFormulario = '';
-  erroFormulario = '';
+  erroFormulario = signal('');
 
   // Guarda as opções de medidores utilizadas no Select do formulário
   opcoesMedidores: OpcaoSelect[] = [];
@@ -72,7 +73,7 @@ export class LeiturasPage implements OnInit {
 
   // Abre ou fecha o formulário de criação e carrega as opções de medidores quando necessário
   alterarFormularioCriacao(aberto: boolean): void {
-    this.erroFormulario = '';
+    this.erroFormulario.set('');
 
     if (aberto && this.opcoesMedidores.length === 0) {
       this.carregarOpcoesMedidores();
@@ -87,7 +88,7 @@ export class LeiturasPage implements OnInit {
   // O valor é opcional e, quando não informado, fica sob responsabilidade do backend
   salvarLeitura(): void {
     if (!this.medidorFormulario) {
-      this.erroFormulario = 'Selecione um medidor.';
+      this.erroFormulario.set('Selecione um medidor.');
       return;
     }
 
@@ -99,13 +100,13 @@ export class LeiturasPage implements OnInit {
     if (this.valorFormulario.trim()) {
       const valor = Number(this.valorFormulario.replace(',', '.'));
       if (Number.isNaN(valor)) {
-        this.erroFormulario = 'Informe um valor válido.';
+        this.erroFormulario.set('Informe um valor válido.');
         return;
       }
       novaLeitura.valor = valor;
     }
 
-    this.erroFormulario = '';
+    this.erroFormulario.set('');
 
     this.leiturasService.criar(novaLeitura).subscribe({
       next: () => {
@@ -114,8 +115,15 @@ export class LeiturasPage implements OnInit {
         this.carregarLeituras();
       },
 
-      error: (erro) => {
-        console.error('Erro ao criar leitura:', erro);
+      error: (erro: HttpErrorResponse) => {
+        const mensagem = erro.error?.message;
+
+        if (Array.isArray(mensagem)) {
+          this.erroFormulario.set(mensagem.join(' '));
+          return;
+        }
+
+        this.erroFormulario = mensagem || 'Não foi possível registrar a leitura.';
       },
     });
   }

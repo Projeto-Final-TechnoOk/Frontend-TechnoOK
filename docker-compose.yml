@@ -1,0 +1,16 @@
+services:
+  frontend-build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: technook-frontend-build-prod
+
+    volumes:
+      - technook-frontend-dist-prod:/output
+
+    restart: 'no'
+
+volumes:
+  technook-frontend-dist-prod:
+    external: true

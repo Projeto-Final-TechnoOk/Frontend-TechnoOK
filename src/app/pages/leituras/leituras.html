@@ -76,7 +76,7 @@
 @if (formularioCriacaoAberto()) {
   <app-formulario
     titulo="Nova Leitura"
-    [erro]="erroFormulario"
+    [erro]="erroFormulario()"
     (fechar)="alterarFormularioCriacao(false)"
     (salvar)="salvarLeitura()"
   >
