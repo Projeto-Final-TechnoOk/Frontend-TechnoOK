@@ -35,8 +35,8 @@
 }
 
 .valor-contador {
-  margin-top: 12px;
-  font-size: 2rem;
+  margin-top: 0px;
+  font-size: 1.6rem;
   font-weight: 600;
   color: var(--cor-texto-primario);
 }
@@ -59,7 +59,7 @@
 }
 
 .valor {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 600;
 }
 

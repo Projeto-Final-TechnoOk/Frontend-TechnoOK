@@ -47,8 +47,59 @@
           (clicado)="entrar()"
         ></app-botao>
       </div>
+      @if (primeiroAdminDisponivel()) {
+        <div class="primeiro-acesso">
+          <span>Primeiro acesso ao sistema?</span>
+
+          <button
+            type="button"
+            class="botao-primeiro-acesso"
+            (click)="alterarFormularioPrimeiroAdmin(true)"
+          >
+            Criar administrador
+          </button>
+        </div>
+      }
     </div>
 
     <img src="/imagemLogin.png" alt="Logo Fink" />
   </div>
 </div>
+
+@if (formularioPrimeiroAdminAberto()) {
+  <app-formulario
+    titulo="Criar primeiro administrador"
+    [erro]="erroPrimeiroAdmin()"
+    (fechar)="alterarFormularioPrimeiroAdmin(false)"
+    (salvar)="criarPrimeiroAdmin()"
+  >
+    <app-input-texto
+      label="Nome"
+      name="nomePrimeiroAdmin"
+      placeholder="Insira seu nome"
+      [required]="true"
+      [valor]="nomePrimeiroAdmin()"
+      (valorAlterado)="nomePrimeiroAdmin.set($event)"
+    ></app-input-texto>
+
+    <app-input-texto
+      label="E-mail"
+      name="emailPrimeiroAdmin"
+      type="email"
+      placeholder="Insira seu e-mail"
+      [required]="true"
+      [valor]="emailPrimeiroAdmin()"
+      (valorAlterado)="emailPrimeiroAdmin.set($event)"
+    ></app-input-texto>
+
+    <app-input-texto
+      label="Senha"
+      name="senhaPrimeiroAdmin"
+      type="password"
+      placeholder="Insira sua senha"
+      [required]="true"
+      [valor]="senhaPrimeiroAdmin()"
+      (valorAlterado)="senhaPrimeiroAdmin.set($event)"
+    ></app-input-texto>
+  </app-formulario>
+}

@@ -50,3 +50,30 @@
   color: #7a7a7a;
   line-height: 1.4;
 }
+
+.primeiro-acesso {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  font-size: 14px;
+  color: var(--cor-texto-secundario);
+}
+
+.botao-primeiro-acesso {
+  padding: 0;
+
+  border: none;
+  background: transparent;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cor-primaria);
+
+  cursor: pointer;
+}
+
+.botao-primeiro-acesso:hover {
+  text-decoration: underline;
+}

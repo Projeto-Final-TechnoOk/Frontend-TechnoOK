@@ -1,59 +1,354 @@
-# Frontend
+# TechnoOK — Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.3.
+Frontend da aplicação **TechnoOK / Fink**, responsável pela interface utilizada pelos usuários para acompanhar e administrar os dados de telemetria.
 
-## Development server
+O projeto foi desenvolvido em **Angular** e funciona como uma aplicação SPA.
 
-To start a local development server, run:
+## O que este projeto faz
 
-```bash
-ng serve
+O frontend concentra:
+
+- login;
+- criação do primeiro administrador no primeiro acesso;
+- login automático após a criação do primeiro administrador;
+- armazenamento da sessão e do JWT;
+- envio automático do token nas requisições;
+- logout e tratamento de sessão expirada;
+- Dashboard;
+- visualização de imóveis;
+- visualização de medidores;
+- visualização e criação de leituras;
+- criação de usuários por administradores;
+- paginação e filtros;
+- gráficos de consumo;
+- comparação de medidores;
+- componentes visuais reutilizáveis;
+- navegação entre páginas.
+
+Em produção, o Angular **não mantém um servidor de desenvolvimento rodando**. O projeto é compilado em arquivos estáticos e esses arquivos são servidos pelo Nginx.
+
+## Tecnologias principais
+
+- Angular 22
+- TypeScript
+- Angular Signals
+- Angular Router
+- HttpClient
+- Functional Guards
+- HTTP Interceptors
+- ApexCharts
+- Docker
+- Docker Compose
+- Nginx, na camada de infraestrutura
+
+## Estrutura principal de pastas
+
+Pastas geradas, como `node_modules` e `dist`, não são exibidas.
+
+```text
+frontend/
+├── src/
+│   ├── app/
+│   │   ├── components/
+│   │   │   ├── botao/
+│   │   │   ├── card/
+│   │   │   ├── formulario/
+│   │   │   ├── grafico-barras/
+│   │   │   ├── grafico-linha/
+│   │   │   ├── input-texto/
+│   │   │   ├── multi-botoes/
+│   │   │   ├── popup-delecao/
+│   │   │   ├── popup-detalhes/
+│   │   │   ├── select/
+│   │   │   └── tabela/
+│   │   ├── guards/
+│   │   │   └── auth.guard.ts
+│   │   ├── interceptors/
+│   │   │   └── auth.interceptor.ts
+│   │   ├── layouts/
+│   │   │   ├── app-layout/
+│   │   │   ├── auth-layout/
+│   │   │   └── navbar/
+│   │   ├── models/
+│   │   │   ├── auth/
+│   │   │   ├── imoveis/
+│   │   │   ├── leituras/
+│   │   │   ├── medidores/
+│   │   │   └── usuarios/
+│   │   ├── pages/
+│   │   │   ├── dashboard/
+│   │   │   ├── login/
+│   │   │   ├── imovel/
+│   │   │   ├── imoveis/
+│   │   │   ├── medidor/
+│   │   │   ├── medidores/
+│   │   │   └── leituras/
+│   │   ├── services/
+│   │   │   ├── auth
+│   │   │   ├── dashboard
+│   │   │   ├── imoveis
+│   │   │   ├── leituras
+│   │   │   ├── medidores
+│   │   │   └── usuarios
+│   │   ├── app.config.ts
+│   │   └── app.routes.ts
+│   ├── enviroments/
+│   │   └── enviroment.ts
+│   ├── styles.css
+│   └── index.html
+├── Dockerfile
+├── docker-compose.yml
+├── .dockerignore
+├── angular.json
+├── package.json
+└── package-lock.json
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Como funciona em produção
 
-## Code scaffolding
+O fluxo do frontend é:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```text
+Código Angular
+     ↓
+npm run build
+     ↓
+dist/frontend/browser
+     ↓
+technook-frontend-dist-prod
+     ↓
+Nginx
+     ↓
+Browser
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+O Angular é executado no navegador a partir do JavaScript gerado pelo build.
 
-```bash
-ng generate --help
+Não existe um container Angular permanente em produção.
+
+## Comunicação com a API
+
+O frontend utiliza:
+
+```ts
+apiUrl: '/api'
 ```
 
-## Building
+Exemplo:
 
-To build the project run:
-
-```bash
-ng build
+```text
+POST /api/auth/login
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+O Nginx recebe a chamada e encaminha ao backend:
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
+```text
+Browser
+   ↓
+/api/auth/login
+   ↓
+Nginx
+   ↓
+backend:3000/auth/login
+   ↓
+NestJS
 ```
 
-## Running end-to-end tests
+Assim, o navegador não precisa conhecer diretamente a porta `3000`.
 
-For end-to-end (e2e) testing, run:
+## Autenticação
 
-```bash
-ng e2e
+### Login
+
+O frontend envia e-mail e senha para o backend. Quando a autenticação é válida, recebe o JWT e os dados do usuário e salva a sessão no `localStorage`.
+
+### Interceptor
+
+O interceptor adiciona automaticamente:
+
+```http
+Authorization: Bearer <token>
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+nas chamadas destinadas à API.
 
-## Additional Resources
+Também trata respostas `401`, limpando a sessão e redirecionando o usuário para `/login`.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Guard
+
+O `authGuard` controla a navegação nas rotas protegidas.
+
+Exemplos:
+
+```text
+/dashboard
+/imoveis
+/medidores
+/leituras
+```
+
+> O guard melhora a navegação e a experiência do usuário. A segurança efetiva da API continua sendo garantida pelo backend.
+
+## Primeiro acesso
+
+Ao abrir a página de login, o frontend consulta:
+
+```http
+GET /usuarios/primeiro-admin/disponivel
+```
+
+Se não existir nenhum usuário, a tela apresenta a opção de criar o primeiro administrador.
+
+A criação utiliza:
+
+```http
+POST /usuarios/primeiro-admin
+```
+
+Depois de criar o administrador, o frontend realiza automaticamente o login com as mesmas credenciais, salva o JWT e redireciona para:
+
+```text
+/dashboard
+```
+
+Quando já existe usuário, a opção de primeiro acesso deixa de ser exibida.
+
+## Roteamento
+
+Ao acessar:
+
+```text
+/
+```
+
+o frontend direciona com base na existência da sessão:
+
+```text
+token existe?
+├── sim → /dashboard
+└── não → /login
+```
+
+O Nginx possui fallback para `index.html`, permitindo atualizar diretamente rotas Angular, como:
+
+```text
+/medidores/<id>
+/imoveis/<id>
+```
+
+## Docker em produção
+
+O Compose do frontend possui um job temporário:
+
+```text
+frontend-build
+```
+
+Esse job:
+
+1. cria um container temporário;
+2. executa `npm run build`;
+3. gera `dist/frontend/browser`;
+4. limpa o conteúdo anterior do volume;
+5. copia o novo build para `technook-frontend-dist-prod`;
+6. encerra;
+7. é removido automaticamente com `--rm`.
+
+## Primeira execução
+
+### 1. Prepare os recursos compartilhados
+
+No projeto `infra`:
+
+```bash
+sudo ./docker-setup/setup.sh
+```
+
+Esse script cria o volume externo:
+
+```text
+technook-frontend-dist-prod
+```
+
+### 2. Gere o frontend
+
+Na pasta `frontend`:
+
+```bash
+sudo docker compose run --rm --build frontend-build
+```
+
+Esse único comando reconstrói a imagem, cria o container temporário, executa o build, copia o resultado para o volume e remove o container ao terminar.
+
+O container finalizar após o build é o comportamento esperado.
+
+### 3. Suba o Nginx
+
+Depois que o backend estiver disponível, na pasta `infra`:
+
+```bash
+sudo docker compose up -d nginx
+```
+
+A aplicação ficará disponível em:
+
+```text
+http://localhost
+```
+
+## Execuções seguintes
+
+Depois de alterar o frontend:
+
+```bash
+sudo docker compose run --rm --build frontend-build
+```
+
+Não é necessário reiniciar o Nginx, pois ele já monta o mesmo volume compartilhado.
+
+Se o frontend não mudou, não é necessário executar o job novamente.
+
+## Saída do build
+
+```text
+dist/frontend/browser
+```
+
+Exemplo:
+
+```text
+index.html
+main-XXXXXXXX.js
+styles-XXXXXXXX.css
+assets/
+```
+
+## Endereços principais
+
+Aplicação:
+
+```text
+http://localhost
+```
+
+Login:
+
+```text
+http://localhost/login
+```
+
+Swagger:
+
+```text
+http://localhost/docs
+```
+
+## Comandos úteis
+
+```bash
+# Reconstruir, executar e remover o container temporário
+sudo docker compose run --rm --build frontend-build
+
+# Executar uma imagem já construída
+sudo docker compose run --rm frontend-build
+```
