@@ -123,7 +123,7 @@ export class LeiturasPage implements OnInit {
           return;
         }
 
-        this.erroFormulario = mensagem || 'Não foi possível registrar a leitura.';
+        this.erroFormulario.set(mensagem || 'Não foi possível registrar a leitura.');
       },
     });
   }
