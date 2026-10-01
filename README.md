@@ -1,33 +1,27 @@
-# TechnoOK — Frontend
+# Frontend
 
-Frontend da aplicação **TechnoOK / Fink**, responsável pela interface utilizada pelos usuários para acompanhar e administrar os dados de telemetria.
+###### Design e identidade visual baseados no projeto Fink - https://github.com/fink-finance/fink-frontend
 
-O projeto foi desenvolvido em **Angular** e funciona como uma aplicação SPA.
+Frontend da aplicação, responsável pela interface utilizada pelos usuários para acompanhar e administrar os dados de telemetria.
 
-## O que este projeto faz
+O projeto foi desenvolvido em **Angular** e funciona como uma aplicação SPA (Single Page Application).
+
+## Responsabilidades
 
 O frontend concentra:
 
-- login;
+- autenticação e sessão do usuário;
 - criação do primeiro administrador no primeiro acesso;
-- login automático após a criação do primeiro administrador;
-- armazenamento da sessão e do JWT;
-- envio automático do token nas requisições;
-- logout e tratamento de sessão expirada;
 - Dashboard;
-- visualização de imóveis;
-- visualização de medidores;
-- visualização e criação de leituras;
+- visualização e navegação entre imóveis, medidores e leituras;
+- criação de imóveis, medidores e leituras;
 - criação de usuários por administradores;
-- paginação e filtros;
-- gráficos de consumo;
-- comparação de medidores;
-- componentes visuais reutilizáveis;
-- navegação entre páginas.
+- filtros, paginação e gráficos;
+- componentes visuais reutilizáveis.
 
-Em produção, o Angular **não mantém um servidor de desenvolvimento rodando**. O projeto é compilado em arquivos estáticos e esses arquivos são servidos pelo Nginx.
+Em produção, o Angular **não mantém um servidor de desenvolvimento rodando**. O projeto é compilado em arquivos estáticos e servido pelo Nginx.
 
-## Tecnologias principais
+## Tecnologias
 
 - Angular 22
 - TypeScript
@@ -39,14 +33,14 @@ Em produção, o Angular **não mantém um servidor de desenvolvimento rodando**
 - ApexCharts
 - Docker
 - Docker Compose
-- Nginx, na camada de infraestrutura
 
-## Estrutura principal de pastas
+## Estrutura
 
 Pastas geradas, como `node_modules` e `dist`, não são exibidas.
 
 ```text
 frontend/
+├── public/
 ├── src/
 │   ├── app/
 │   │   ├── components/
@@ -57,43 +51,52 @@ frontend/
 │   │   │   ├── grafico-linha/
 │   │   │   ├── input-texto/
 │   │   │   ├── multi-botoes/
+│   │   │   ├── navbar/
 │   │   │   ├── popup-delecao/
 │   │   │   ├── popup-detalhes/
 │   │   │   ├── select/
-│   │   │   └── tabela/
+│   │   │   ├── seta/
+│   │   │   ├── tabela/
+│   │   │   └── tag/
+│   │   ├── enums/
+│   │   │   ├── medidores/
+│   │   │   └── usuarios/
 │   │   ├── guards/
 │   │   │   └── auth.guard.ts
 │   │   ├── interceptors/
 │   │   │   └── auth.interceptor.ts
 │   │   ├── layouts/
 │   │   │   ├── app-layout/
-│   │   │   ├── auth-layout/
-│   │   │   └── navbar/
+│   │   │   └── auth-layout/
 │   │   ├── models/
 │   │   │   ├── auth/
+│   │   │   ├── dashboard/
 │   │   │   ├── imoveis/
 │   │   │   ├── leituras/
 │   │   │   ├── medidores/
 │   │   │   └── usuarios/
 │   │   ├── pages/
 │   │   │   ├── dashboard/
-│   │   │   ├── login/
-│   │   │   ├── imovel/
 │   │   │   ├── imoveis/
+│   │   │   ├── imovel/
+│   │   │   ├── leituras/
+│   │   │   ├── login/
 │   │   │   ├── medidor/
-│   │   │   ├── medidores/
-│   │   │   └── leituras/
+│   │   │   └── medidores/
 │   │   ├── services/
-│   │   │   ├── auth
-│   │   │   ├── dashboard
-│   │   │   ├── imoveis
-│   │   │   ├── leituras
-│   │   │   ├── medidores
-│   │   │   └── usuarios
+│   │   │   ├── auth.ts
+│   │   │   ├── dashboard.ts
+│   │   │   ├── imoveis.ts
+│   │   │   ├── leituras.ts
+│   │   │   ├── medidores.ts
+│   │   │   └── usuarios.ts
 │   │   ├── app.config.ts
-│   │   └── app.routes.ts
+│   │   ├── app.html
+│   │   ├── app.routes.ts
+│   │   └── app.ts
 │   ├── enviroments/
 │   │   └── enviroment.ts
+│   ├── main.ts
 │   ├── styles.css
 │   └── index.html
 ├── Dockerfile
@@ -104,9 +107,9 @@ frontend/
 └── package-lock.json
 ```
 
-## Como funciona em produção
+## Funcionamento em produção
 
-O fluxo do frontend é:
+O frontend é compilado e enviado para um volume Docker compartilhado:
 
 ```text
 Código Angular
@@ -122,8 +125,6 @@ Nginx
 Browser
 ```
 
-O Angular é executado no navegador a partir do JavaScript gerado pelo build.
-
 Não existe um container Angular permanente em produção.
 
 ## Comunicação com a API
@@ -131,7 +132,7 @@ Não existe um container Angular permanente em produção.
 O frontend utiliza:
 
 ```ts
-apiUrl: '/api'
+apiUrl: '/api';
 ```
 
 Exemplo:
@@ -154,31 +155,27 @@ backend:3000/auth/login
 NestJS
 ```
 
-Assim, o navegador não precisa conhecer diretamente a porta `3000`.
+Assim, o navegador não acessa diretamente a porta `3000`.
 
 ## Autenticação
 
 ### Login
 
-O frontend envia e-mail e senha para o backend. Quando a autenticação é válida, recebe o JWT e os dados do usuário e salva a sessão no `localStorage`.
+O frontend envia e-mail e senha para o backend. Quando o login é válido, recebe o JWT e os dados do usuário e salva a sessão no `localStorage`.
 
 ### Interceptor
 
-O interceptor adiciona automaticamente:
+O interceptor adiciona automaticamente o token nas chamadas da API:
 
 ```http
 Authorization: Bearer <token>
 ```
 
-nas chamadas destinadas à API.
-
-Também trata respostas `401`, limpando a sessão e redirecionando o usuário para `/login`.
+Também trata respostas `401`, limpando a sessão e redirecionando para `/login`.
 
 ### Guard
 
-O `authGuard` controla a navegação nas rotas protegidas.
-
-Exemplos:
+O `authGuard` controla a navegação nas rotas protegidas, como:
 
 ```text
 /dashboard
@@ -187,7 +184,7 @@ Exemplos:
 /leituras
 ```
 
-> O guard melhora a navegação e a experiência do usuário. A segurança efetiva da API continua sendo garantida pelo backend.
+> O guard controla a navegação no frontend. A validação de segurança continua sendo responsabilidade do backend.
 
 ## Primeiro acesso
 
@@ -197,31 +194,29 @@ Ao abrir a página de login, o frontend consulta:
 GET /usuarios/primeiro-admin/disponivel
 ```
 
-Se não existir nenhum usuário, a tela apresenta a opção de criar o primeiro administrador.
-
-A criação utiliza:
+Se ainda não existir usuário, a tela permite criar o primeiro administrador:
 
 ```http
 POST /usuarios/primeiro-admin
 ```
 
-Depois de criar o administrador, o frontend realiza automaticamente o login com as mesmas credenciais, salva o JWT e redireciona para:
+Depois da criação, o frontend realiza automaticamente o login, salva a sessão e redireciona para:
 
 ```text
 /dashboard
 ```
 
-Quando já existe usuário, a opção de primeiro acesso deixa de ser exibida.
+Quando já existe usuário cadastrado, essa opção deixa de ser exibida.
 
 ## Roteamento
 
-Ao acessar:
+Ao acessar a raiz:
 
 ```text
 /
 ```
 
-o frontend direciona com base na existência da sessão:
+o frontend decide o destino com base na sessão:
 
 ```text
 token existe?
@@ -229,30 +224,25 @@ token existe?
 └── não → /login
 ```
 
-O Nginx possui fallback para `index.html`, permitindo atualizar diretamente rotas Angular, como:
-
-```text
-/medidores/<id>
-/imoveis/<id>
-```
+O Nginx utiliza fallback para `index.html`, permitindo atualizar diretamente rotas Angular sem quebrar a SPA.
 
 ## Docker em produção
 
-O Compose do frontend possui um job temporário:
+O Compose do frontend possui o job temporário:
 
 ```text
 frontend-build
 ```
 
-Esse job:
+Ele:
 
-1. cria um container temporário;
-2. executa `npm run build`;
-3. gera `dist/frontend/browser`;
-4. limpa o conteúdo anterior do volume;
-5. copia o novo build para `technook-frontend-dist-prod`;
-6. encerra;
-7. é removido automaticamente com `--rm`.
+1. executa o build Angular;
+2. gera `dist/frontend/browser`;
+3. limpa o conteúdo anterior do volume;
+4. copia o novo build para `technook-frontend-dist-prod`;
+5. encerra.
+
+Quando executado com `--rm`, o container temporário é removido automaticamente.
 
 ## Primeira execução
 
@@ -264,7 +254,7 @@ No projeto `infra`:
 sudo ./docker-setup/setup.sh
 ```
 
-Esse script cria o volume externo:
+Esse script cria, entre outros recursos:
 
 ```text
 technook-frontend-dist-prod
@@ -278,9 +268,7 @@ Na pasta `frontend`:
 sudo docker compose run --rm --build frontend-build
 ```
 
-Esse único comando reconstrói a imagem, cria o container temporário, executa o build, copia o resultado para o volume e remove o container ao terminar.
-
-O container finalizar após o build é o comportamento esperado.
+Esse comando reconstrói a imagem, executa o build, copia os arquivos para o volume e remove o container temporário ao finalizar.
 
 ### 3. Suba o Nginx
 
@@ -298,13 +286,13 @@ http://localhost
 
 ## Execuções seguintes
 
-Depois de alterar o frontend:
+Após alterar o frontend:
 
 ```bash
 sudo docker compose run --rm --build frontend-build
 ```
 
-Não é necessário reiniciar o Nginx, pois ele já monta o mesmo volume compartilhado.
+Não é necessário reiniciar o Nginx, pois ele já utiliza o mesmo volume compartilhado.
 
 Se o frontend não mudou, não é necessário executar o job novamente.
 
@@ -345,10 +333,14 @@ http://localhost/docs
 
 ## Comandos úteis
 
-```bash
-# Reconstruir, executar e remover o container temporário
-sudo docker compose run --rm --build frontend-build
+Reconstruir e publicar o frontend:
 
-# Executar uma imagem já construída
+```bash
+sudo docker compose run --rm --build frontend-build
+```
+
+Executar novamente uma imagem já construída:
+
+```bash
 sudo docker compose run --rm frontend-build
 ```
